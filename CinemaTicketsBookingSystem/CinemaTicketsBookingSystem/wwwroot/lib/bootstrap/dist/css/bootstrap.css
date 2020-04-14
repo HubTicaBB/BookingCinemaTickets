@@ -11,7 +11,7 @@
  * Copyright 2011-2019 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
-@import url("https://fonts.googleapis.com/css?family=Lato:400,700,400italic&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Nunito+Sans:400,600&display=swap");
 
 :root {
     --blue: #375a7f;
@@ -64,9 +64,11 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 
 body {
     margin: 0;
-    font-family: "Lato", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    font-size: 0.9375rem;
-    font-weight: 400;
+    font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    /*font-family: "Lato", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";*/
+    font-size: 0.875rem !important;
+    font-weight: 200;
+    letter-spacing: 1px !important;
     line-height: 1.5;
     color: #fff;
     text-align: left;
@@ -2927,8 +2929,7 @@ textarea.form-control {
     user-select: none;
     background-color: transparent;
     border: 1px solid transparent;
-    padding: 0.375rem 0.75rem;
-    font-size: 0.9375rem;
+    padding: 0.375rem 0.75rem;    
     line-height: 1.5;
     border-radius: 0.25rem;
     -webkit-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
@@ -3350,7 +3351,7 @@ fieldset:disabled a.btn {
 }
 
     .btn-outline-success:hover {
-        color: #fff;
+        color: #fff !important;
         background-color: #00bc8c;
         border-color: #00bc8c;
     }
@@ -3384,7 +3385,7 @@ fieldset:disabled a.btn {
 }
 
     .btn-outline-info:hover {
-        color: #fff;
+        color: #fff !important;
         background-color: #3498DB;
         border-color: #3498DB;
     }
@@ -4843,11 +4844,14 @@ input[type="button"].btn-block {
     font-size: 1.171875rem;
     line-height: inherit;
     white-space: nowrap;
+    font-family: 'Great Vibes', cursive !important; 
+    font-size: 3rem !important;
 }
 
     .navbar-brand:hover, .navbar-brand:focus {
         text-decoration: none;
     }
+
 
 .navbar-nav {
     display: -webkit-box;
@@ -4865,6 +4869,9 @@ input[type="button"].btn-block {
     .navbar-nav .nav-link {
         padding-right: 0;
         padding-left: 0;
+        text-transform: uppercase;
+        font-size: 0.765625rem;
+        font-weight: 600;
     }
 
     .navbar-nav .dropdown-menu {

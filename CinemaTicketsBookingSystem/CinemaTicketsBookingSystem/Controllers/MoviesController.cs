@@ -19,8 +19,21 @@ namespace CinemaTicketsBookingSystem.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var movies = _db.Movies.Include(m => m.Genre);
+            var movies = _db.Movies
+                .Include(m => m.Genre);
             return View(await movies.ToListAsync());
+        }
+
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null) return NotFound();
+
+            var movie = await _db.Movies
+                .Include(m => m.Genre)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (movie == null) return NotFound();
+            return View(movie);
         }
     }
 }

@@ -1,0 +1,28 @@
+﻿@model CinemaTicketsBookingSystem.Models.Movie
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<table class="table table-hover">
+    <tbody>
+        <tr>
+            <th class="col-md-1" scope="row"><img src="@Url.Content(Model.PosterUrl)" /></th>
+            <td>
+                <h4>@Model.Title<span class="text-muted"> (@Model.ReleaseYear)</span></h4>
+                <dl>
+                    <dd class="text-muted">@Model.Duration.ToString("h'h 'mm'min'") &nbsp; | &nbsp; @Model.Genre.Name</dd>
+                    <dd>@Model.Plot<br /></dd>
+                    <dd><span class="text-muted">Director:</span> <strong>@Model.Director</strong></dd>
+                    <dd>
+                        <br />
+                        <a asp-action="Index" class="btn btn-outline-info">Back</a> &nbsp;
+                        <a asp-controller="Showtimes" asp-action="Index" class="btn btn-outline-success">Find Showtimes</a>
+                    </dd>
+                </dl>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
