@@ -15,7 +15,7 @@ namespace CinemaTicketsBookingSystem.Models
         public string Title { get; set; }
 
         [Required]
-        public int ReleaseDate { get; set; }
+        public int ReleaseYear { get; set; }
 
         [Required]
         public TimeSpan Duration { get; set; }
