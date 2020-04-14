@@ -163,14 +163,11 @@ sup {
 }
 
 a {
-    color: #00bc8c;
     text-decoration: none;
     background-color: transparent;
 }
-
     a:hover {
-        color: #007053;
-        text-decoration: underline;
+        color: #7c92aa !important;
     }
 
     a:not([href]) {
@@ -553,7 +550,7 @@ pre {
 }
 
 .container {
-    width: 100%;
+    width: 90%;
     padding-right: 15px;
     padding-left: 15px;
     margin-right: auto;
@@ -5287,8 +5284,7 @@ input[type="button"].btn-block {
     -ms-flex-direction: column;
     flex-direction: column;
     min-width: 0;
-    word-wrap: break-word;
-    background-color: #303030;
+    word-wrap: break-word;    
     background-clip: border-box;
     border: 1px solid rgba(0, 0, 0, 0.125);
     border-radius: 0.25rem;
@@ -5352,6 +5348,11 @@ input[type="button"].btn-block {
     .card-header + .list-group .list-group-item:first-child {
         border-top: 0;
     }
+
+.card:hover {
+    width: 101%;
+    background-color: #2b2b2b;
+}
 
 .card-footer {
     padding: 0.75rem 1.25rem;
@@ -11372,7 +11373,7 @@ button.bg-dark:focus {
 }
 
 .text-primary {
-    color: #375a7f !important;
+    color: #3f6996 !important;
 }
 
 a.text-primary:hover, a.text-primary:focus {
@@ -11396,11 +11397,7 @@ a.text-success:hover, a.text-success:focus {
 }
 
 .text-info {
-    color: #3498DB !important;
-}
-
-a.text-info:hover, a.text-info:focus {
-    color: #1d6fa5 !important;
+    color: #2e80b7 !important;
 }
 
 .text-warning {
