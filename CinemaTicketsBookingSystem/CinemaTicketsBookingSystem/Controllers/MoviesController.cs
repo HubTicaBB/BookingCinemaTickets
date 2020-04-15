@@ -21,6 +21,7 @@ namespace CinemaTicketsBookingSystem.Controllers
         {
             var movies = _db.Movies
                 .Include(m => m.Genre);
+
             return View(await movies.ToListAsync());
         }
 

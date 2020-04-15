@@ -1,0 +1,42 @@
+﻿@model IEnumerable<CinemaTicketsBookingSystem.Models.Showtime>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<table class="table table-hover">
+    <tbody>
+        @foreach (var showtime in Model)
+        {
+            <tr >
+                <th class="col-md-1" scope="row" ><img src="@Url.Content(showtime.Movie.PosterUrl)" /></th>
+                <td>
+                    <h4>@showtime.Movie.Title</h4>
+                    <br />
+                    <dl>  
+                        <dd>@showtime.Movie.ReleaseYear</dd>
+                        <dd>@showtime.Movie.Director</dd>
+                        <dd>@showtime.Movie.Genre</dd>
+                        <dd>
+                            <br />
+                            <a asp-controller="Movies" asp-action="Details" asp-route-id="@showtime.Movie.Id" class="btn btn-outline-info">Read More</a> &nbsp;
+                            <a asp-controller="Showtimes" asp-action="Index" class="btn btn-outline-warning">Add to Shopping Cart</a>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <h4>@showtime.CinemaHall.Name</h4>
+                    <br />
+                    <dl>
+                        <dd><span class="text-muted">Starting Time: </span>@showtime.Time.ToString("HH:mm")</dd>
+                        <dd><span class="text-muted">Duration: </span>@showtime.Movie.Duration.ToString("h'h 'mm'min'")</dd>
+                        <dd><span class="text-muted">Price: </span>@showtime.TicketPrice.ToString("C")</dd>
+                        <dd><span class="text-muted">Tickets left: </span></dd>
+                    </dl>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
