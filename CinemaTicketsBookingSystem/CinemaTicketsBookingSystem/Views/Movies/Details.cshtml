@@ -5,10 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<table class="table table-hover">
+<table class="table text-light">
     <tbody>
         <tr>
-            <th class="col-md-1" scope="row"><img src="@Url.Content(Model.PosterUrl)"/></th>
+            <th class="table-img" scope="row"><img src="@Url.Content(Model.PosterUrl)"/></th>
             <td>
                 <h4>@Model.Title<span class="text-muted"> (@Model.ReleaseYear)</span></h4>
                 <dl>
@@ -17,7 +17,7 @@
                     <dd><span class="text-muted">Director:</span> <strong>@Model.Director</strong></dd>
                     <dd>
                         <br />                        
-                        <a asp-controller="Movies" asp-action="Index" class="btn btn-outline-info">Back to Repertoire</a> &nbsp;
+                        <a asp-controller="Movies" asp-action="Index" class="btn btn-outline-info">Go to Repertoire</a> &nbsp;
                         <a asp-controller="Showtimes" asp-action="Index" class="btn btn-outline-success">Go to Showtimes</a>
                     </dd>
                 </dl>

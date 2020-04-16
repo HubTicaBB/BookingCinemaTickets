@@ -5,28 +5,26 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<table class="table table-hover">
+<table class="table table-hover table-responsive-md text-light">
     <tbody>
         @foreach (var showtime in Model)
         {
             <tr >
-                <th class="col-md-1" scope="row" ><img src="@Url.Content(showtime.Movie.PosterUrl)" /></th>
+                <th scope="row" ><img src="@Url.Content(showtime.Movie.PosterUrl)" class="table-img"/></th>
                 <td>
                     <h4>@showtime.Movie.Title</h4>
                     <br />
                     <dl>  
                         <dd>@showtime.Movie.ReleaseYear</dd>
                         <dd>@showtime.Movie.Director</dd>
-                        <dd>@showtime.Movie.Genre</dd>
-                        <dd>
-                            <br />
+                        <dd>                            
                             <a asp-controller="Movies" asp-action="Details" asp-route-id="@showtime.Movie.Id" class="btn btn-outline-info">Read More</a> &nbsp;
-                            <a asp-controller="Showtimes" asp-action="Index" class="btn btn-outline-warning">Add to Shopping Cart</a>
+                            <a asp-controller="Showtimes" asp-action="ShoppingCart" asp-route-id="@showtime.Id" class="btn btn-outline-warning">Buy Ticket</a>
                         </dd>
                     </dl>
                 </td>
                 <td>
-                    <h4>@showtime.CinemaHall.Name</h4>
+                    <h4 class="text-muted">@showtime.CinemaHall.Name</h4>
                     <br />
                     <dl>
                         <dd><span class="text-muted">Starting Time: </span>@showtime.Time.ToString("HH:mm")</dd>
