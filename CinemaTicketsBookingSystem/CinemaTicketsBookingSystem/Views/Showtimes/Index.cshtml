@@ -5,36 +5,46 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<table class="table table-hover table-responsive-md text-light">
-    <tbody>
-        @foreach (var showtime in Model)
-        {
-            <tr >
-                <th scope="row" ><img src="@Url.Content(showtime.Movie.PosterUrl)" class="table-img"/></th>
-                <td>
-                    <h4>@showtime.Movie.Title</h4>
-                    <br />
-                    <dl>  
-                        <dd>@showtime.Movie.ReleaseYear</dd>
-                        <dd>@showtime.Movie.Director</dd>
-                        <dd>                            
-                            <a asp-controller="Movies" asp-action="Details" asp-route-id="@showtime.Movie.Id" class="btn btn-outline-info">Read More</a> &nbsp;
-                            <a asp-controller="Showtimes" asp-action="ShoppingCart" asp-route-id="@showtime.Id" class="btn btn-outline-warning">Buy Ticket</a>
-                        </dd>
-                    </dl>
-                </td>
-                <td>
-                    <h4 class="text-muted">@showtime.CinemaHall.Name</h4>
-                    <br />
-                    <dl>
-                        <dd><span class="text-muted">Starting Time: </span>@showtime.Time.ToString("HH:mm")</dd>
-                        <dd><span class="text-muted">Duration: </span>@showtime.Movie.Duration.ToString("h'h 'mm'min'")</dd>
-                        <dd><span class="text-muted">Price: </span>@showtime.TicketPrice.ToString("C")</dd>
-                        <dd><span class="text-muted">Tickets left: </span></dd>
-                    </dl>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+@if (Model.Count() > 0)
+{
+    <div class="text-center"><h4 class="text-info text-uppercase"><span class="text-light">Showtimes on: </span>@DateTime.Now.ToString("MMMM dd yyyy")</h4></div>
+    <table class="table table-hover table-responsive-md text-light">
+        <tbody>
+            @foreach (var showtime in Model)
+            {
+                <tr>
+                    <th scope="row"><img src="@Url.Content(showtime.Movie.PosterUrl)" class="table-img" /></th>
+                    <td>
+                        <h4>@showtime.Movie.Title</h4>
+                        <br />
+                        <dl>
+                            <dd>@showtime.Movie.ReleaseYear</dd>
+                            <dd>@showtime.Movie.Director</dd>
+                            <dd>
+                                <a asp-controller="Movies" asp-action="Details" asp-route-id="@showtime.Movie.Id" class="btn btn-outline-info">Read More</a> &nbsp;
+                                <a asp-controller="Showtimes" asp-action="ShoppingCart" asp-route-id="@showtime.Id" class="btn btn-outline-warning">Buy Ticket</a>
+                            </dd>
+                        </dl>
+                    </td>
+                    <td>
+                        <h4 class="text-muted">@showtime.CinemaHall.Name</h4>
+                        <br />
+                        <dl>
+                            <dd><span class="text-muted">Starting Time: </span>@showtime.Time.ToString("HH:mm")</dd>
+                            <dd><span class="text-muted">Duration: </span>@showtime.Movie.Duration.ToString("h'h 'mm'min'")</dd>
+                            <dd><span class="text-muted">Price: </span>@showtime.TicketPrice.ToString("C")</dd>
+                            <dd><span class="text-muted">Tickets left: </span></dd>
+                        </dl>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div><h3 class="text-info">No showtimes found</h3></div>
+    <div><p class="text-light">Sorry, no showtimes for this movie today.</p></div>
+    <div><a asp-controller="Showtimes" asp-action="Index" asp-route-id="@null" class="btn btn-outline-info">Check what's on today</a></div>
+}
 

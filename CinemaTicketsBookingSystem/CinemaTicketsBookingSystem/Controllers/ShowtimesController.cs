@@ -18,16 +18,17 @@ namespace CinemaTicketsBookingSystem.Controllers
             _db = db;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
-            var movies = _db.Movies.OrderBy(m => Guid.NewGuid()).Take(6);
-            var cinemaHalls = _db.CinemaHalls.ToList();
-            int time = 15;
-            int count = 1;
-            decimal price;
-
             if (!_db.Showtimes.Any(s => s.Time.Date == DateTime.Today))
             {
+                var movies = _db.Movies.OrderBy(m => Guid.NewGuid()).Take(6);
+
+                var cinemaHalls = _db.CinemaHalls.ToList();
+                int time = 15;
+                int count = 1;
+                decimal price;
+
                 foreach (var movie in movies)
                 {
                     var cinemaHall = (count <= 3) ? cinemaHalls[0] : cinemaHalls[1];
@@ -45,12 +46,38 @@ namespace CinemaTicketsBookingSystem.Controllers
             }
             _db.SaveChanges();
 
-            var showtimes = _db.Showtimes
+            var showtimes = await _db.Showtimes
                 .Include(s => s.Movie)
                 .Include(s => s.CinemaHall)
-                .OrderBy(s => s.Time);
+                .Where(s => s.Time.Day == DateTime.Now.Day)
+                .OrderBy(s => s.Time).ToListAsync();
 
-            return View(await showtimes.ToListAsync());
+            if (id != null)
+            {
+                showtimes = showtimes.Where(s => s.Movie.Id == id).ToList();
+            }
+
+            return View(showtimes);
+        }
+
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null) return NotFound();
+
+            var showtime = await _db.Showtimes
+                .Include(s => s.Movie)
+                .Include(s => s.CinemaHall)
+                .FirstOrDefaultAsync(s => s.Id == id);
+
+            if (showtime == null) return NotFound();
+
+            ShoppingCart shoppingCart = new ShoppingCart()
+            {
+                Showtime = showtime,
+                ShowtimeId = showtime.Id
+            };
+
+            return View(shoppingCart);
         }
     }
 }

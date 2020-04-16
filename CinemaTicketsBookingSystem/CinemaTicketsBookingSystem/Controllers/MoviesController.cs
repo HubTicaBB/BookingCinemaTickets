@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CinemaTicketsBookingSystem.Data;
+using CinemaTicketsBookingSystem.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,7 +34,8 @@ namespace CinemaTicketsBookingSystem.Controllers
                 .Include(m => m.Genre)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
-            if (movie == null) return NotFound();
+            if (movie == null) return NotFound();            
+
             return View(movie);
         }
     }

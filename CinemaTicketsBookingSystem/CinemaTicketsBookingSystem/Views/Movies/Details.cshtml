@@ -17,8 +17,8 @@
                     <dd><span class="text-muted">Director:</span> <strong>@Model.Director</strong></dd>
                     <dd>
                         <br />                        
-                        <a asp-controller="Movies" asp-action="Index" class="btn btn-outline-info">Go to Repertoire</a> &nbsp;
-                        <a asp-controller="Showtimes" asp-action="Index" class="btn btn-outline-success">Go to Showtimes</a>
+                        <a asp-controller="Movies" asp-action="Index" class="btn btn-outline-info">Back to Repertoire</a> &nbsp;
+                        <a asp-controller="Showtimes" asp-action="Index" asp-route-id="@Model.Id" class="btn btn-outline-success">Find Showtimes</a>
                     </dd>
                 </dl>
             </td>
