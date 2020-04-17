@@ -7,10 +7,19 @@ using System.Threading.Tasks;
 
 namespace CinemaTicketsBookingSystem.Models
 {
-    public class ShoppingCart
+    public class Item
     {
+        public Item()
+        {
+            Count = 1;
+        }
         public int Id { get; set; }
-        public IList<Item> Items { get; set; }
-        public bool IsPending { get; set; }
+
+        public int ShowtimeId { get; set; }
+        [ForeignKey("ShowtimeId")]
+        public Showtime Showtime { get; set; }
+
+        [Range(1, Int32.MaxValue)]
+        public int Count { get; set; }
     }
 }

@@ -3060,7 +3060,7 @@ fieldset:disabled a.btn {
 }
 
     .btn-success:hover {
-        color: #fff;
+        color: #fff !important;
         background-color: #009670;
         border-color: #008966;
     }
@@ -5374,7 +5374,6 @@ input[type="button"].btn-block {
 
 .card-footer {
     padding: 0.75rem 1.25rem;
-    background-color: #444;
     border-top: 1px solid rgba(0, 0, 0, 0.125);
 }
 

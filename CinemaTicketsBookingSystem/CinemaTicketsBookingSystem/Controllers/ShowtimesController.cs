@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using CinemaTicketsBookingSystem.Data;
 using CinemaTicketsBookingSystem.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -60,7 +63,7 @@ namespace CinemaTicketsBookingSystem.Controllers
             return View(showtimes);
         }
 
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Buy(int? id)
         {
             if (id == null) return NotFound();
 
@@ -71,13 +74,53 @@ namespace CinemaTicketsBookingSystem.Controllers
 
             if (showtime == null) return NotFound();
 
-            ShoppingCart shoppingCart = new ShoppingCart()
+            Item item = new Item()
             {
                 Showtime = showtime,
                 ShowtimeId = showtime.Id
             };
 
-            return View(shoppingCart);
+            _db.Items.Add(item);
+            _db.SaveChanges();
+
+            return View(item);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Buy([Bind("Id,ShowtimeId,Count")] Item item)
+        {
+            if (ModelState.IsValid)
+            {
+                var itemFromDb = _db.Items.FirstOrDefault(i => i.ShowtimeId == item.Id);
+                itemFromDb.Count = item.Count;
+                _db.Items.Update(itemFromDb);
+
+                ShoppingCart shoppingCart;
+
+                if (_db.ShoppingCarts.Any(s => s.IsPending))
+                {
+                    shoppingCart = _db.ShoppingCarts
+                        .Include(s => s.Items)
+                        .FirstOrDefault(s => s.IsPending);
+                    shoppingCart.Items.Add(itemFromDb);
+                }
+                else
+                {
+                    shoppingCart = new ShoppingCart() { IsPending = true, Items = new List<Item>() };
+                    shoppingCart.Items.Add(itemFromDb);
+                    _db.ShoppingCarts.Add(shoppingCart);
+                }
+                _db.SaveChanges();                
+            }
+            else
+            {
+                // TODO
+            }
+            
+            var cart = _db.ShoppingCarts.FirstOrDefault(s => s.IsPending);
+
+            return RedirectToAction("Index", "ShoppingCarts", new { shoppingCart = cart });
         }
     }
 }
