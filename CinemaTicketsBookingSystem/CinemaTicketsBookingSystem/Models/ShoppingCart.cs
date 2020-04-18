@@ -28,8 +28,6 @@ namespace CinemaTicketsBookingSystem.Models
         [Range(1, 100)]
         public int Count { get; set; }
 
-        public bool IsPending { get; set; }
-
         [NotMapped]
         public decimal Price { get; set; }
     }
