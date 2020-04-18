@@ -111,16 +111,14 @@ namespace CinemaTicketsBookingSystem.Controllers
                     shoppingCart.Items.Add(itemFromDb);
                     _db.ShoppingCarts.Add(shoppingCart);
                 }
-                _db.SaveChanges();                
+                _db.SaveChanges();
             }
             else
             {
                 // TODO
             }
-            
-            var cart = _db.ShoppingCarts.FirstOrDefault(s => s.IsPending);
 
-            return RedirectToAction("Index", "ShoppingCarts", new { shoppingCart = cart });
+            return RedirectToAction(nameof(Index));
         }
     }
 }
