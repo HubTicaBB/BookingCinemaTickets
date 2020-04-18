@@ -14,7 +14,6 @@ namespace CinemaTicketsBookingSystem.Data
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Showtime> Showtimes { get; set; }
-        public DbSet<Item> Items { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<Purchase> Purchases { get; set; }
 

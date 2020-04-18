@@ -9,8 +9,23 @@ namespace CinemaTicketsBookingSystem.Models
 {
     public class ShoppingCart
     {
+        public ShoppingCart()
+        {
+            Count = 1;
+        }
+
         public int Id { get; set; }
-        public IList<Item> Items { get; set; }
+
+        public int ItemId { get; set; }
+        [ForeignKey("ItemId")]
+        public Showtime Item { get; set; }
+        
+        [Range(1, 100)]
+        public int Count { get; set; }
+
         public bool IsPending { get; set; }
+
+        [NotMapped]
+        public decimal Price { get; set; }
     }
 }

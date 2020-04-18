@@ -1,24 +1,66 @@
-﻿@model CinemaTicketsBookingSystem.Models.ViewModels.ShoppingCartVM
+﻿@model CinemaTicketsBookingSystem.Models.ShoppingCart    
 
-    @{
-        ViewData["Title"] = "Index";
-        Layout = "~/Views/Shared/_Layout.cshtml";
-    }
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}    
 
-    <h1>Shopping Cart</h1>
-
+@if (Model == null)
+{
+    <div>
+        <h3>Shopping Cart</h3>
+        <p>Your shopping cart is empty</p>
+        <div><a asp-controller="Showtimes" asp-action="Index" asp-route-id="@null" class="btn btn-outline-info">Check what's on today</a></div>
+    </div>
+}
+else
+{
     <form method="post">
         <br />
         <div class="card-header bg-dark text-light row">
             <div class="col-12 col-md-12">
-                <div class="col-6">
+                <div class="col-12">
                     <i class="fa fa-shopping-cart"></i> &nbsp; Shopping Cart
-                </div>
-                <div class="col-6 text-right">
-                    <a asp-controller="Showtimes" asp-action="Index" class="btn btn-outline-info btn-sm">Continue Shopping</a>
+                    <a asp-controller="Showtimes" asp-action="Index" asp-route-id="@null" class="btn btn-outline-info btn-sm" style="position: absolute; right: 0">Continue Shopping</a>
                 </div>
             </div>
         </div>
+        <div class="card-body">
+            <div class="rounded">
+                @*@foreach (var item in Model.Items)
+                {
+                    <div class="row">
+                        <div class="col-12 col-lg-3 offset-lg-1 text-center">
+                            <img class="table-img rounded" src="@Url.Content(item.Showtime.Movie.PosterUrl)" />
+                        </div>
+                        <div class="col-8 col-lg-8">
+                            <div class="row pl-2">
+                                <h6 class="text-muted pb-2">Cinema Hall: <span class="text-light">@item.Showtime.CinemaHall.Name</span></h6>
+                            </div>
+                            <div class="row pl-2">
+                                <h6 class="text-muted pb-2">Starting Time: <span class="text-light">@item.Showtime.Time.ToString("HH:mm")</span></h6>
+                            </div>
+                            <div class="row pl-2">
+                                <h6 class="text-muted pb-2">Price: <span class="text-light">@item.Showtime.TicketPrice.ToString("C")</span></h6>
+                            </div>
+                            <div class="row pl-2">
+                                <p class="text-muted" style="margin: 25px 0">@item.Showtime.Movie.Plot</p>
+                            </div>
+                            <div class="row pl-2">
+                                <div class="col-2 text-primary"><h4>Count</h4></div>
+                                <div class="col-2"><input class="form-control" asp-for="Count" /></div>
+                            </div>
+                        </div>
+
+                    </div>
+                }*@
+            </div>
+        </div>
+    </form>
+}
+
+    @*<form method="post">
+
 
         <div class="card-body">
             <div class="rounded">
@@ -28,7 +70,7 @@
                         <div class="col-12 col-lg-3 offset-lg-1 text-center">
                             <img class="table-img rounded" src="@Url.Content(item.Showtime.Movie.PosterUrl)" />
                         </div>
-                        @*<div class="col-8 col-lg-8">
+                        <div class="col-8 col-lg-8">
                                 <div class="row pl-2">
                                     <h6 class="text-muted pb-2">Cinema Hall: <span class="text-light">@Model.Showtime.CinemaHall.Name</span></h6>
                                 </div>
@@ -45,7 +87,7 @@
                                     <div class="col-2 text-primary"><h4>Count</h4></div>
                                     <div class="col-2"><input class="form-control" asp-for="Count" /></div>
                                 </div>
-                            </div>*@
+                            </div>
 
                     </div>
                 }
@@ -61,4 +103,4 @@
                 </div>
             </div>
         </div>
-    </form>
+    </form>*@

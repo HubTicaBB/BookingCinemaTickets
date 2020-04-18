@@ -1,4 +1,4 @@
-﻿@model CinemaTicketsBookingSystem.Models.Item
+﻿@model CinemaTicketsBookingSystem.Models.ShoppingCart
 
 @{
     ViewData["Title"] = "Buy";
@@ -6,12 +6,12 @@
 }
 
 <form method="post">
-    <input hidden asp-for="ShowtimeId" />
+    <input hidden asp-for="ItemId" />
     <div class="card-header bg-dark text-light row">
         <div class="col-12 col-md-12">
-            <h2 class="text-primary">@Model.Showtime.Movie.Title</h2>
-            <p class="text-muted">@Model.Showtime.Movie.ReleaseYear</p>
-            <p class="text-light">by @Model.Showtime.Movie.Director</p>
+            <h3 class="text-primary">@Model.Item.Movie.Title</h3>
+            <p class="text-muted">@Model.Item.Movie.ReleaseYear</p>
+            <p class="text-light">by @Model.Item.Movie.Director</p>
         </div>
     </div>
     <div class="card-body">
@@ -19,16 +19,16 @@
             <div class="row">
                 <div class="col-8 col-lg-8">
                     <div class="row pl-2">
-                        <h6 class="text-muted pb-2">Cinema Hall: <span class="text-light">@Model.Showtime.CinemaHall.Name</span></h6>
+                        <h6 class="text-muted pb-2">Cinema Hall: <span class="text-light">@Model.Item.CinemaHall.Name</span></h6>
                     </div>
                     <div class="row pl-2">
-                        <h6 class="text-muted pb-2">Starting Time: <span class="text-light">@Model.Showtime.Time.ToString("HH:mm")</span></h6>
+                        <h6 class="text-muted pb-2">Starting Time: <span class="text-light">@Model.Item.Time.ToString("HH:mm")</span></h6>
                     </div>
                     <div class="row pl-2">
-                        <h6 class="text-muted pb-2">Price: <span class="text-light">@Model.Showtime.TicketPrice.ToString("C")</span></h6>
+                        <h6 class="text-muted pb-2">Price: <span class="text-light">@Model.Item.TicketPrice.ToString("C")</span></h6>
                     </div>
                     <div class="row pl-2">
-                        <p class="text-muted" style="margin: 25px 0">@Model.Showtime.Movie.Plot</p>
+                        <p class="text-muted" style="margin: 25px 0">@Model.Item.Movie.Plot</p>
                     </div>
                     <div class="row pl-2">
                         <div class="col-2 text-primary"><h4>Count</h4></div>
@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-lg-3 offset-lg-1 text-center">
-                    <img class="table-img rounded" src="@Url.Content(@Model.Showtime.Movie.PosterUrl)" />
+                    <img class="table-img rounded" src="@Url.Content(@Model.Item.Movie.PosterUrl)" />
                 </div>
             </div>
         </div>
@@ -47,7 +47,7 @@
                 <a asp-action="Index" class="btn btn-success form-control  btn-square btn-lg" style="height:50px;">Back to List</a>
             </div>
             <div class="col-12 col-md-6 pb-1">
-                <button type="submit" value="Add to Cart" class="btn btn-primary btn-square btn-lg form-control" style="height:50px;">Add to Cart</button>
+                <button type="submit" value="Add to Cart" class="btn btn-primary btn-square btn-lg form-control" style="height:50px;">Add to &nbsp;<i class="fas fa-shopping-cart"></i></button>
             </div>
         </div>
     </div>
