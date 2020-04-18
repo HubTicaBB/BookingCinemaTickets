@@ -24,11 +24,7 @@ namespace CinemaTicketsBookingSystem.Models
         public int ItemId { get; set; }
         [ForeignKey("ItemId")]
         public Showtime Item { get; set; }
-        
-        [Range(1, 100)]
-        public int Count { get; set; }
 
-        [NotMapped]
-        public decimal Price { get; set; }
+        public int Count { get; set; }
     }
 }

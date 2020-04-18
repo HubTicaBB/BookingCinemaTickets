@@ -1,106 +1,74 @@
-﻿@model CinemaTicketsBookingSystem.Models.ShoppingCart    
+﻿@model CinemaTicketsBookingSystem.Models.ShoppingCartViewModel 
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }    
 
-@if (Model == null)
-{
-    <div>
-        <h3>Shopping Cart</h3>
-        <p>Your shopping cart is empty</p>
-        <div><a asp-controller="Showtimes" asp-action="Index" asp-route-id="@null" class="btn btn-outline-info">Check what's on today</a></div>
-    </div>
-}
-else
-{
     <form method="post">
         <br />
-        <div class="card-header bg-dark text-light row">
-            <div class="col-12 col-md-12">
-                <div class="col-12">
-                    <i class="fa fa-shopping-cart"></i> &nbsp; Shopping Cart
-                    <a asp-controller="Showtimes" asp-action="Index" asp-route-id="@null" class="btn btn-outline-info btn-sm" style="position: absolute; right: 0">Continue Shopping</a>
+        @if (Model.ShoppingCarts.Count() > 0)
+        {
+            <div class="card-header bg-dark text-light row">
+                <div class="col-6">
+                    <h5><i class="fa fa-shopping-cart"></i> &nbsp; Your Shopping Cart</h5>
+                </div>
+                <div class="col-6 text-right">
+                    <a asp-area="Customer" asp-controller="Showtimes" asp-action="Index" class="btn btn-outline-info">Continue Shopping</a>
                 </div>
             </div>
-        </div>
-        <div class="card-body">
-            <div class="rounded">
-                @*@foreach (var item in Model.Items)
+            <div class="card-body">
+                @foreach (var item in Model.ShoppingCarts)
                 {
                     <div class="row">
-                        <div class="col-12 col-lg-3 offset-lg-1 text-center">
-                            <img class="table-img rounded" src="@Url.Content(item.Showtime.Movie.PosterUrl)" />
+                        <div class="d-none d-lg-block col-lg-1 text-center py-2">
+                            <img src="@Url.Content(item.Item.Movie.PosterUrl)" class="rounded" width="100%" />
                         </div>
-                        <div class="col-8 col-lg-8">
-                            <div class="row pl-2">
-                                <h6 class="text-muted pb-2">Cinema Hall: <span class="text-light">@item.Showtime.CinemaHall.Name</span></h6>
+                        <div class="col-12 text-sm-center col-lg-6 text-lg-left">
+                            <h5 class="text-light"><strong>@item.Item.Movie.Title</strong><span class="text-muted font-weight-light"> (@item.Item.Movie.ReleaseYear)</span></h5>
+                            <p class="text-muted">by <span class="text-light">@item.Item.Movie.Director</span></p>
+                            <p class="text-muted">Cinema Hall: <span class="text-light">@item.Item.CinemaHall.Name</span></p>
+                            <p class="text-muted">Time: <span class="text-light">@item.Item.Time.ToString("HH:mm")</span></p>
+                        </div>
+                        <div class="col-12 text-sm-center col-lg-5 text-lg-right row">
+                            <div class="col-4 text-md-right" style="padding-top:5px;">
+                                <h6><strong class="text-light">@item.Item.TicketPrice.ToString("C")<span class="text-muted"> x </span>@item.Count</strong></h6>
                             </div>
-                            <div class="row pl-2">
-                                <h6 class="text-muted pb-2">Starting Time: <span class="text-light">@item.Showtime.Time.ToString("HH:mm")</span></h6>
+                            <div class="col-6 col-sm-4 col-lg-6">
+                                <div class="float-right mx-1">
+                                    <a asp-action="plus" asp-route-cartId="@item.Id" class="btn btn-outline-info">
+                                        <i class="fas fa-plus"></i>
+                                    </a>
+                                </div>
+                                <div class="float-right mx-1">
+                                    <a asp-action="minus" asp-route-cartId="@item.Id" class="btn btn-outline-warning">
+                                        <i class="fas fa-minus"></i>
+                                    </a>
+                                </div>
                             </div>
-                            <div class="row pl-2">
-                                <h6 class="text-muted pb-2">Price: <span class="text-light">@item.Showtime.TicketPrice.ToString("C")</span></h6>
-                            </div>
-                            <div class="row pl-2">
-                                <p class="text-muted" style="margin: 25px 0">@item.Showtime.Movie.Plot</p>
-                            </div>
-                            <div class="row pl-2">
-                                <div class="col-2 text-primary"><h4>Count</h4></div>
-                                <div class="col-2"><input class="form-control" asp-for="Count" /></div>
+                            <div class="col-2 col-sm-4 col-lg-2 text-right">
+                                <a asp-action="remove" asp-route-cartId="@item.Id" class="btn btn-outline-danger">
+                                    <i class="fas fa-trash"></i>
+                                </a>
                             </div>
                         </div>
-
                     </div>
-                }*@
-            </div>
-        </div>
-    </form>
-}
-
-    @*<form method="post">
-
-
-        <div class="card-body">
-            <div class="rounded">
-                @foreach (var item in Model.Items)
-                {
-                    <div class="row">
-                        <div class="col-12 col-lg-3 offset-lg-1 text-center">
-                            <img class="table-img rounded" src="@Url.Content(item.Showtime.Movie.PosterUrl)" />
-                        </div>
-                        <div class="col-8 col-lg-8">
-                                <div class="row pl-2">
-                                    <h6 class="text-muted pb-2">Cinema Hall: <span class="text-light">@Model.Showtime.CinemaHall.Name</span></h6>
-                                </div>
-                                <div class="row pl-2">
-                                    <h6 class="text-muted pb-2">Starting Time: <span class="text-light">@Model.Showtime.Time.ToString("HH:mm")</span></h6>
-                                </div>
-                                <div class="row pl-2">
-                                    <h6 class="text-muted pb-2">Price: <span class="text-light">@Model.Showtime.TicketPrice.ToString("C")</span></h6>
-                                </div>
-                                <div class="row pl-2">
-                                    <p class="text-muted" style="margin: 25px 0">@Model.Showtime.Movie.Plot</p>
-                                </div>
-                                <div class="row pl-2">
-                                    <div class="col-2 text-primary"><h4>Count</h4></div>
-                                    <div class="col-2"><input class="form-control" asp-for="Count" /></div>
-                                </div>
-                            </div>
-
-                    </div>
+                    <hr />
                 }
-            </div>
-        </div>
-        <div class="card-footer">
-            <div class="row">
-                <div class="col-12 col-md-6 pb-1">
-                    <a asp-action="Index" class="btn btn-success form-control  btn-square btn-lg" style="height:50px;">Back to List</a>
+                <div class="row">
+                    <div class="col-12 col-md-6 offset-md-6 col-lg-4 offset-lg-8 pr-4">
+                        <div class="bg-dark list-group-item d-flex justify-content-between">
+                            <span class="text-info">Total</span>
+                            <strong class="text-info">$ <span id="txtOrderTotal">@Model.PurchaseHeader.TotalAmount.ToString("C")</span></strong>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-12 col-md-6 pb-1">
-                    <button type="submit" value="Add to Cart" class="btn btn-primary btn-square btn-lg form-control" style="height:50px;">Add to Cart</button>
+                <br />
+                <div class="row">
+                    <div class="col-12 col-md-6 offset-md-6 col-lg-4 offset-lg-8 pr-4">
+                        <a asp-controller="ShoppingCarts" asp-action="Checkout" class="btn btn-success form-control btn-lg">Proceed to Checkout</a>
+                    </div>
                 </div>
             </div>
-        </div>
-    </form>*@
+        }
+    </form>

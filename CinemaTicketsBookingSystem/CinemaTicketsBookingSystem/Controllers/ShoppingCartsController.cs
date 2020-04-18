@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using CinemaTicketsBookingSystem.Data;
+using CinemaTicketsBookingSystem.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,18 +14,56 @@ namespace CinemaTicketsBookingSystem.Controllers
     {
         private readonly ApplicationDbContext _db;
 
+        [BindProperty]  // Otherwise OrderHeader is considered as not initialized in the POST action method somehow...
+        public ShoppingCartViewModel ShoppingCartVM { get; set; }
+
         public ShoppingCartsController(ApplicationDbContext db)
         {
             _db = db;
         }
 
-        //public async Task<IActionResult> Index()
-        //{
-        //    var shoppingCart = await _db.ShoppingCarts
-        //        .Include(s => s.Items)
-        //        .FirstOrDefaultAsync(s => s.IsPending);
+        public async Task<IActionResult> Index()
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
 
-        //    return View(shoppingCart);
-        //}
-    }
+            ShoppingCartVM = new ShoppingCartViewModel()
+            {
+                PurchaseHeader = new PurchaseHeader(),
+                ShoppingCarts = await _db.ShoppingCarts
+                    .Include(s => s.Item)
+                    .Include(s => s.Item.Movie)
+                    .Include(s => s.Item.CinemaHall)
+                    .Where(s => s.ApplicationUserId == claim.Value)
+                    .ToListAsync()
+            };
+
+            ShoppingCartVM.PurchaseHeader.TotalAmount = 0;
+            ShoppingCartVM.PurchaseHeader.ApplicationUser = _db.Users.FirstOrDefault(u => u.Id == claim.Value);
+
+            foreach (var item in ShoppingCartVM.ShoppingCarts)
+            {
+                ShoppingCartVM.PurchaseHeader.TotalAmount += (item.Item.TicketPrice * item.Count);
+            }
+
+            return View(ShoppingCartVM);
+        }
+
+        public async Task<IActionResult> Checkout()
+        {
+            return View();
+        }
+
+
+    //    ShoppingCartVM.PurchaseHeader.ApplicationUser = _db.Users.FirstOrDefault(u => u.Id == claim.Value);
+
+    //        foreach (var item in ShoppingCartVM.ShoppingCarts)
+    //        {
+    //            ShoppingCartVM.PurchaseHeader.TotalAmount += (item.Price* item.Count);
+    //        }
+
+    //ShoppingCartVM.PurchaseHeader.UserName = ShoppingCartVM.PurchaseHeader.ApplicationUser.UserName;
+
+    //        return View(ShoppingCartVM);
+}
 }

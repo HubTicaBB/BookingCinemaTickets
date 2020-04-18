@@ -152,44 +152,5 @@ namespace CinemaTicketsBookingSystem.Controllers
                 return View(cartItem);
             }            
         }
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //[Authorize]
-        //public async Task<IActionResult> Buy([Bind("Id,ShowtimeId,Count")] Item item)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var itemFromDb = await _db.Items.FirstOrDefaultAsync(i => i.ShowtimeId == item.Id);
-        //        itemFromDb.Count = item.Count;
-        //        _db.Items.Update(itemFromDb);
-
-        //        ShoppingCart shoppingCart = new ShoppingCart()
-        //        {
-
-        //        };
-
-        //        if (_db.ShoppingCarts.Any(s => s.IsPending))
-        //        {
-        //            shoppingCart = await _db.ShoppingCarts
-        //                .Include(s => s.Item)
-        //                .FirstOrDefaultAsync(s => s.IsPending);
-        //            shoppingCart.Items.Add(itemFromDb);
-        //        }
-        //        else
-        //        {
-        //            shoppingCart = new ShoppingCart() { IsPending = true, Items = new List<Item>() };
-        //            shoppingCart.Items.Add(itemFromDb);
-        //            _db.ShoppingCarts.Add(shoppingCart);
-        //        }
-        //        _db.SaveChanges();
-        //    }
-        //    else
-        //    {
-        //        TODO
-        //    }
-
-        //    return RedirectToAction(nameof(Index));
-        //}
     }
 }
