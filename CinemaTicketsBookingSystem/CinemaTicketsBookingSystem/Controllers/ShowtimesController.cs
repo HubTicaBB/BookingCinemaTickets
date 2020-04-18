@@ -83,6 +83,14 @@ namespace CinemaTicketsBookingSystem.Controllers
             return View(shoppingCart);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Customer")]
+        public IActionResult Buy(ShoppingCart cartItem)
+        {
+            return RedirectToAction(nameof(Index));
+        }
+
         //[HttpPost]
         //[ValidateAntiForgeryToken]
         //public async Task<IActionResult> Buy([Bind("Id,ShowtimeId,Count")] Item item)

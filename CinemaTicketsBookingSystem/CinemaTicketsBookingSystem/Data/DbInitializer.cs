@@ -1,5 +1,12 @@
-﻿using CinemaTicketsBookingSystem.Models;
+﻿using Castle.Core.Resource;
+using CinemaTicketsBookingSystem.Models;
+using CinemaTicketsBookingSystem.Utility;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.CodeAnalysis.Options;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,13 +16,31 @@ namespace CinemaTicketsBookingSystem.Data
 {
     public class DbInitializer
     {
+        public static async Task Initialize(IServiceProvider serviceProvider)
+        {
+            using (var db = new ApplicationDbContext(
+                serviceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>()))
+            {
+                Seed(db);
+            }
+        }
+
         public static void Seed(ApplicationDbContext db)
         {
             db.Database.EnsureCreated();
 
+            
             SeedGenres(db);
             SeedMovies(db);
             SeedCinemaHalls(db);
+        }
+
+        private static void AddAdmin(ApplicationDbContext db)
+        {
+            var email = "admin@berrasbio.com";
+            var password = "D0ntTrajTuHakM1!";
+
+            var admin = new IdentityUser { UserName = email, Email = email, PasswordHash = password };
         }
 
         private static void SeedCinemaHalls(ApplicationDbContext db)

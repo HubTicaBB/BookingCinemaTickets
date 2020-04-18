@@ -29,6 +29,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Showtimes" asp-action="Index" asp-route-id="@null">What's On Today</a>
                         </li>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Showtimes" asp-action="Index" asp-route-id="@null">Admin Stuff</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

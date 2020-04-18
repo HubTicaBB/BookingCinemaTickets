@@ -24,7 +24,8 @@ namespace CinemaTicketsBookingSystem
                 try
                 {
                     var db = services.GetRequiredService<ApplicationDbContext>();
-                    DbInitializer.Seed(db);
+                    var config = host.Services.GetRequiredService<IConfiguration>();
+                    DbInitializer.Initialize(services).Wait();
                 }
                 catch (Exception ex)
                 {
