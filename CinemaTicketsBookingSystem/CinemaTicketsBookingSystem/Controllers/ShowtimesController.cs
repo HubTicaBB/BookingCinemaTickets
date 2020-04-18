@@ -85,7 +85,7 @@ namespace CinemaTicketsBookingSystem.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Customer")]
+        [Authorize]
         public IActionResult Buy(ShoppingCart cartItem)
         {
             return RedirectToAction(nameof(Index));
