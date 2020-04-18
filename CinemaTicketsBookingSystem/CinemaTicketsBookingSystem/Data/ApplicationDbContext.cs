@@ -15,7 +15,8 @@ namespace CinemaTicketsBookingSystem.Data
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Showtime> Showtimes { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
-        public DbSet<Purchase> Purchases { get; set; }
+        public DbSet<PurchaseHeader> PurchaseHeaders { get; set; }
+        public DbSet<PurchaseDetails> PurchaseDetails { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -34,7 +35,7 @@ namespace CinemaTicketsBookingSystem.Data
             modelBuilder.Entity<Genre>().ToTable("Genres");
             modelBuilder.Entity<Showtime>().ToTable("Showtimes");
             modelBuilder.Entity<ShoppingCart>().ToTable("ShoppingCarts");
-            modelBuilder.Entity<Purchase>().ToTable("Purchases");
+            modelBuilder.Entity<PurchaseHeader>().ToTable("Purchases");
         }
     }
 }

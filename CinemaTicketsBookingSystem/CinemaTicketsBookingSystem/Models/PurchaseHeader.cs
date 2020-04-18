@@ -1,4 +1,5 @@
 ﻿using Castle.MicroKernel.SubSystems.Conversion;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,9 +9,13 @@ using System.Threading.Tasks;
 
 namespace CinemaTicketsBookingSystem.Models
 {
-    public class Purchase
+    public class PurchaseHeader
     {
         public int Id { get; set; }
+
+        public string ApplicationUserId { get; set; }
+        [ForeignKey("ApplicationUserId")]
+        public IdentityUser ApplicationUser { get; set; }
 
         [Required]
         public DateTime Date { get; set; }
@@ -18,6 +23,13 @@ namespace CinemaTicketsBookingSystem.Models
         [Required]
         [Column(TypeName = "decimal(18,4)")]
         public decimal TotalAmount { get; set; }
+
+        public string Status { get; set; }
+
+        public string PaymentStatus { get; set; }
+
+        [Required]
+        public string UserName { get; set; }
 
         [NotMapped]
         public ShoppingCart ShoppingCart { get; set; }

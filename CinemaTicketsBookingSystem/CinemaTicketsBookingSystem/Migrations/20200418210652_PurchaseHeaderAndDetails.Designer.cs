@@ -4,14 +4,16 @@ using CinemaTicketsBookingSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CinemaTicketsBookingSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200418210652_PurchaseHeaderAndDetails")]
+    partial class PurchaseHeaderAndDetails
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -90,34 +92,6 @@ namespace CinemaTicketsBookingSystem.Migrations
                     b.HasIndex("GenreId");
 
                     b.ToTable("Movies");
-                });
-
-            modelBuilder.Entity("CinemaTicketsBookingSystem.Models.PurchaseDetails", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Count")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ItemId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,4)");
-
-                    b.Property<int>("PurchaseId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ItemId");
-
-                    b.HasIndex("PurchaseId");
-
-                    b.ToTable("PurchaseDetails");
                 });
 
             modelBuilder.Entity("CinemaTicketsBookingSystem.Models.PurchaseHeader", b =>
@@ -411,21 +385,6 @@ namespace CinemaTicketsBookingSystem.Migrations
                     b.HasOne("CinemaTicketsBookingSystem.Models.Genre", "Genre")
                         .WithMany()
                         .HasForeignKey("GenreId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("CinemaTicketsBookingSystem.Models.PurchaseDetails", b =>
-                {
-                    b.HasOne("CinemaTicketsBookingSystem.Models.Showtime", "Item")
-                        .WithMany()
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CinemaTicketsBookingSystem.Models.PurchaseHeader", "PurchaseHeader")
-                        .WithMany()
-                        .HasForeignKey("PurchaseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

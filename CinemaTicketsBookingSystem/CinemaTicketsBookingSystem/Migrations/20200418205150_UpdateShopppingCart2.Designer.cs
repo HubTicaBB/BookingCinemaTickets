@@ -94,7 +94,7 @@ namespace CinemaTicketsBookingSystem.Migrations
                     b.ToTable("Movies");
                 });
 
-            modelBuilder.Entity("CinemaTicketsBookingSystem.Models.Purchase", b =>
+            modelBuilder.Entity("CinemaTicketsBookingSystem.Models.PurchaseHeader", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
