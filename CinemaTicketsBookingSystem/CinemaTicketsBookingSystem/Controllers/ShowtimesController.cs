@@ -60,6 +60,18 @@ namespace CinemaTicketsBookingSystem.Controllers
                 showtimes = showtimes.Where(s => s.Movie.Id == id).ToList();
             }
 
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (claim != null)
+            {
+                var count = _db.ShoppingCarts.Where(s => s.ApplicationUserId == claim.Value)
+                    .ToList()
+                    .Count();
+
+                HttpContext.Session.SetInt32("Shopping cart session", count);
+            }
+
             return View(showtimes);
         }
 
@@ -104,11 +116,12 @@ namespace CinemaTicketsBookingSystem.Controllers
 
                 if (cartFromDb == null)
                 {
-                    // No record for this user and this showtime item
+                    // No record for this user and this showtime item, create a new one
                     _db.ShoppingCarts.Add(cartItem);
                 }
                 else
                 {
+                    // Increase count of the existing showtime item
                     cartFromDb.Count += cartItem.Count;
                     _db.ShoppingCarts.Update(cartFromDb);
                 }

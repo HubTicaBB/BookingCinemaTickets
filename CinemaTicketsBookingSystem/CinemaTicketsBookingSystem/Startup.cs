@@ -41,6 +41,7 @@ namespace CinemaTicketsBookingSystem
             services.AddControllersWithViews();
             services.AddRazorPages();            
             services.AddMvc();
+            services.AddHttpContextAccessor();
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
