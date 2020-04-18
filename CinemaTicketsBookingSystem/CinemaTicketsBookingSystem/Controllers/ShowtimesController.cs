@@ -88,45 +88,95 @@ namespace CinemaTicketsBookingSystem.Controllers
         [Authorize]
         public IActionResult Buy(ShoppingCart cartItem)
         {
-            return RedirectToAction(nameof(Index));
+            cartItem.Id = 0;
+
+            if (ModelState.IsValid)
+            {
+                // ad to cart
+                var claimsIdentity = (ClaimsIdentity)User.Identity;
+                var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+                cartItem.ApplicationUserId = claim.Value;
+
+                ShoppingCart cartFromDb = _db.ShoppingCarts
+                    .Include(s => s.Item)
+                    .FirstOrDefault(s => s.ApplicationUserId == cartItem.ApplicationUserId && s.ItemId == cartItem.ItemId);
+
+                if (cartFromDb == null)
+                {
+                    // No record for this user and this showtime item
+                    _db.ShoppingCarts.Add(cartItem);
+                }
+                else
+                {
+                    cartFromDb.Count += cartItem.Count;
+                    _db.ShoppingCarts.Update(cartFromDb);
+                }
+                _db.SaveChanges();
+
+                var count = _db.ShoppingCarts
+                    .Where(s => s.ApplicationUserId == cartItem.ApplicationUserId)
+                    .ToList()
+                    .Count();
+
+                HttpContext.Session.SetInt32("Shopping cart session", count);
+
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                var itemFromDb = _db.Showtimes
+                    .Include(s => s.Movie)
+                    .Include(s => s.CinemaHall)
+                    .FirstOrDefault(s => s.Id == cartItem.ItemId);
+
+                ShoppingCart shoppingCart = new ShoppingCart()
+                {
+                    Item = itemFromDb,
+                    ItemId = itemFromDb.Id
+                };
+
+                return View(cartItem);
+            }            
         }
 
         //[HttpPost]
         //[ValidateAntiForgeryToken]
+        //[Authorize]
         //public async Task<IActionResult> Buy([Bind("Id,ShowtimeId,Count")] Item item)
         //{
-            //if (ModelState.IsValid)
-            //{
-            //    var itemFromDb = await _db.Items.FirstOrDefaultAsync(i => i.ShowtimeId == item.Id);
-            //    itemFromDb.Count = item.Count;
-            //    _db.Items.Update(itemFromDb);
+        //    if (ModelState.IsValid)
+        //    {
+        //        var itemFromDb = await _db.Items.FirstOrDefaultAsync(i => i.ShowtimeId == item.Id);
+        //        itemFromDb.Count = item.Count;
+        //        _db.Items.Update(itemFromDb);
 
-            //    ShoppingCart shoppingCart = new ShoppingCart() 
-            //    {
+        //        ShoppingCart shoppingCart = new ShoppingCart()
+        //        {
 
-            //    };
+        //        };
 
-            //    if (_db.ShoppingCarts.Any(s => s.IsPending))
-            //    {
-            //        shoppingCart = await _db.ShoppingCarts
-            //            .Include(s => s.Item)
-            //            .FirstOrDefaultAsync(s => s.IsPending);
-            //        shoppingCart.Items.Add(itemFromDb);
-            //    }
-            //    else
-            //    {
-            //        shoppingCart = new ShoppingCart() { IsPending = true, Items = new List<Item>() };
-            //        shoppingCart.Items.Add(itemFromDb);
-            //        _db.ShoppingCarts.Add(shoppingCart);
-            //    }
-            //    _db.SaveChanges();
-            //}
-            //else
-            //{
-            //    // TODO
-            //}
+        //        if (_db.ShoppingCarts.Any(s => s.IsPending))
+        //        {
+        //            shoppingCart = await _db.ShoppingCarts
+        //                .Include(s => s.Item)
+        //                .FirstOrDefaultAsync(s => s.IsPending);
+        //            shoppingCart.Items.Add(itemFromDb);
+        //        }
+        //        else
+        //        {
+        //            shoppingCart = new ShoppingCart() { IsPending = true, Items = new List<Item>() };
+        //            shoppingCart.Items.Add(itemFromDb);
+        //            _db.ShoppingCarts.Add(shoppingCart);
+        //        }
+        //        _db.SaveChanges();
+        //    }
+        //    else
+        //    {
+        //        TODO
+        //    }
 
-            //return RedirectToAction(nameof(Index));
+        //    return RedirectToAction(nameof(Index));
         //}
     }
 }

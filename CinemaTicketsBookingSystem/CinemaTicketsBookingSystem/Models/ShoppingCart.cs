@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -15,6 +16,10 @@ namespace CinemaTicketsBookingSystem.Models
         }
 
         public int Id { get; set; }
+
+        public string ApplicationUserId { get; set; }
+        [ForeignKey("ApplicationUserId")]
+        public IdentityUser ApplicationUser { get; set; }
 
         public int ItemId { get; set; }
         [ForeignKey("ItemId")]
