@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -88,6 +89,19 @@ namespace CinemaTicketsBookingSystem.Controllers
             if (shoppingCart == null) return NotFound();
 
             _db.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Remove(int? cartId)
+        {
+            var shoppingCart = _db.ShoppingCarts.FirstOrDefault(s => s.Id == cartId);
+            var countFromDb = _db.ShoppingCarts.Where(s => s.ApplicationUserId == shoppingCart.ApplicationUserId).ToList().Count();
+
+            _db.ShoppingCarts.Remove(shoppingCart);
+            _db.SaveChanges();
+
+            HttpContext.Session.SetInt32("Shopping cart session", countFromDb - 1);
 
             return RedirectToAction(nameof(Index));
         }
