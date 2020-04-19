@@ -4718,6 +4718,14 @@ input[type="button"].btn-block {
     }
 }
 
+.highlight {
+    color: #c87f0a !important;
+}
+
+    .highlight:hover {
+        color: #ffaf2f !important;
+    }
+
 .nav {
     display: -webkit-box;
     display: -ms-flexbox;

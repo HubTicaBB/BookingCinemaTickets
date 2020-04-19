@@ -27,9 +27,15 @@
     }
     @if (HttpContextAccessor.HttpContext.Session.GetInt32("Shopping cart session") != null)
     {
-        <li>
-            <a class="nav-link text-light" asp-controller="ShoppingCarts" asp-action="Index" style="font-size: 1rem">
+        <li id="cart-nav-icon">
+            <a class="nav-link" asp-controller="ShoppingCarts" asp-action="Index" style="font-size: 1rem" id="cart-nav-icon2">
             @{ var count = HttpContextAccessor.HttpContext.Session.GetInt32("Shopping cart session"); }
+                <script>
+                    if (@count > 0) {
+                        document.getElementById('cart-nav-icon').classList.add('highlight');
+                        document.getElementById('cart-nav-icon2').classList.add('highlight');
+                }
+                </script>
             <i class="fas fa-shopping-cart fa-lg"></i>&nbsp;(@count)</a>
         </li>
     }
