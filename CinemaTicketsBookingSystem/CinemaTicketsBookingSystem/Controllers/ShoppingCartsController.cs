@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using CinemaTicketsBookingSystem.Data;
 using CinemaTicketsBookingSystem.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -55,6 +56,34 @@ namespace CinemaTicketsBookingSystem.Controllers
 
             var shoppingCart = _db.ShoppingCarts.FirstOrDefault(s => s.Id == cartid);
             shoppingCart.Count += 1;
+
+            if (shoppingCart == null) return NotFound();
+
+            _db.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Minus(int? cartid)
+        {
+            if (cartid == null) return NotFound();
+
+            var shoppingCart = _db.ShoppingCarts.FirstOrDefault(s => s.Id == cartid);
+
+            if (shoppingCart == null) return NotFound();
+
+            if (shoppingCart.Count == 1)
+            {
+                var countFromDb = _db.ShoppingCarts.Where(s => s.ApplicationUserId == shoppingCart.ApplicationUserId).ToList().Count();
+                _db.ShoppingCarts.Remove(shoppingCart);
+                _db.SaveChanges();
+                HttpContext.Session.SetInt32("Shopping cart session", countFromDb - 1);
+            }
+            else
+            {
+                shoppingCart.Count -= 1;
+                _db.SaveChanges();
+            }            
 
             if (shoppingCart == null) return NotFound();
 
