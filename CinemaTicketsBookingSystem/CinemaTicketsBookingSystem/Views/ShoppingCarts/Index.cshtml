@@ -7,16 +7,16 @@
 
     <form method="post">
         <br />
+        <div class="card-header bg-dark text-light row">
+            <div class="col-6">
+                <h5><i class="fa fa-shopping-cart"></i> &nbsp; Your Shopping Cart</h5>
+            </div>
+            <div class="col-6 text-right">
+                <a asp-area="Customer" asp-controller="Showtimes" asp-action="Index" class="btn btn-outline-info">Continue Shopping</a>
+            </div>
+        </div>
         @if (Model.ShoppingCarts.Count() > 0)
         {
-            <div class="card-header bg-dark text-light row">
-                <div class="col-6">
-                    <h5><i class="fa fa-shopping-cart"></i> &nbsp; Your Shopping Cart</h5>
-                </div>
-                <div class="col-6 text-right">
-                    <a asp-area="Customer" asp-controller="Showtimes" asp-action="Index" class="btn btn-outline-info">Continue Shopping</a>
-                </div>
-            </div>
             <div class="card-body">
                 @foreach (var item in Model.ShoppingCarts)
                 {
@@ -70,5 +70,9 @@
                     </div>
                 </div>
             </div>
+        }
+        else
+        {
+            <p class="text-light">Your Shopping Cart is empty</p>
         }
     </form>
