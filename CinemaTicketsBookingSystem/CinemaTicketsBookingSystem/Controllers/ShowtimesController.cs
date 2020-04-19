@@ -136,7 +136,7 @@ namespace CinemaTicketsBookingSystem.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
-            else
+            else if (cartItem.Count > 0)
             {
                 var itemFromDb = _db.Showtimes
                     .Include(s => s.Movie)
@@ -150,7 +150,11 @@ namespace CinemaTicketsBookingSystem.Controllers
                 };
 
                 return View(cartItem);
-            }            
+            }
+            else
+            {
+                return View();
+            }
         }
     }
 }
