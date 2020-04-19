@@ -49,6 +49,20 @@ namespace CinemaTicketsBookingSystem.Controllers
             return View(ShoppingCartVM);
         }
 
+        public IActionResult Plus(int? cartid)
+        {
+            if (cartid == null) return NotFound();
+
+            var shoppingCart = _db.ShoppingCarts.FirstOrDefault(s => s.Id == cartid);
+            shoppingCart.Count += 1;
+
+            if (shoppingCart == null) return NotFound();
+
+            _db.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
+        }
+
         public async Task<IActionResult> Checkout()
         {
             return View();
