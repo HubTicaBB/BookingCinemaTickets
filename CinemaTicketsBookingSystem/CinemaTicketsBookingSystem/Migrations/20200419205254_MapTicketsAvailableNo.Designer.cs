@@ -4,14 +4,16 @@ using CinemaTicketsBookingSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CinemaTicketsBookingSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200419205254_MapTicketsAvailableNo")]
+    partial class MapTicketsAvailableNo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -151,26 +153,6 @@ namespace CinemaTicketsBookingSystem.Migrations
                     b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Purchases");
-                });
-
-            modelBuilder.Entity("CinemaTicketsBookingSystem.Models.Seat", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("CinemaHallId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsAvailable")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CinemaHallId");
-
-                    b.ToTable("Seat");
                 });
 
             modelBuilder.Entity("CinemaTicketsBookingSystem.Models.ShoppingCart", b =>
@@ -458,13 +440,6 @@ namespace CinemaTicketsBookingSystem.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "ApplicationUser")
                         .WithMany()
                         .HasForeignKey("ApplicationUserId");
-                });
-
-            modelBuilder.Entity("CinemaTicketsBookingSystem.Models.Seat", b =>
-                {
-                    b.HasOne("CinemaTicketsBookingSystem.Models.CinemaHall", null)
-                        .WithMany("Seats")
-                        .HasForeignKey("CinemaHallId");
                 });
 
             modelBuilder.Entity("CinemaTicketsBookingSystem.Models.ShoppingCart", b =>

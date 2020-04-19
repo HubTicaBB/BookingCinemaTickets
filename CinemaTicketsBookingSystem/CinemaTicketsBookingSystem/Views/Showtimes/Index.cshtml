@@ -33,7 +33,7 @@
                             <dd><span class="text-muted">Starting Time: </span>@showtime.Time.ToString("HH:mm")</dd>
                             <dd><span class="text-muted">Duration: </span>@showtime.Movie.Duration.ToString("h'h 'mm'min'")</dd>
                             <dd><span class="text-muted">Price: </span>@showtime.TicketPrice.ToString("C")</dd>
-                            <dd><span class="text-muted">Tickets left: </span></dd>
+                            <dd><span class="text-muted">Tickets left: </span>@showtime.TicketsAvailable</dd>
                         </dl>
                     </td>
                 </tr>

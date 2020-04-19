@@ -27,7 +27,6 @@ namespace CinemaTicketsBookingSystem.Models
         [Column(TypeName = "decimal(18,4)")]
         public decimal TicketPrice { get; set; }
 
-        [NotMapped]
         public int TicketsAvailable { get; set; }
     }
 }

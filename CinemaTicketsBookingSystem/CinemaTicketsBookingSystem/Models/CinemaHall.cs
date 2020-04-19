@@ -14,8 +14,5 @@ namespace CinemaTicketsBookingSystem.Models
 
         [Required]
         public int SeatingCapacity { get; set; }
-
-        [NotMapped]
-        public ICollection<Seat> Seats { get; set; }
     }
 }

@@ -35,14 +35,6 @@ namespace CinemaTicketsBookingSystem.Data
             SeedCinemaHalls(db);
         }
 
-        private static void AddAdmin(ApplicationDbContext db)
-        {
-            var email = "admin@berrasbio.com";
-            var password = "D0ntTrajTuHakM1!";
-
-            var admin = new IdentityUser { UserName = email, Email = email, PasswordHash = password };
-        }
-
         private static void SeedCinemaHalls(ApplicationDbContext db)
         {
             if (db.CinemaHalls.Any()) return;

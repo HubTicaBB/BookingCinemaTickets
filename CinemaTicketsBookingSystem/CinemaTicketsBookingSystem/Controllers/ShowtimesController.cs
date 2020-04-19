@@ -42,6 +42,7 @@ namespace CinemaTicketsBookingSystem.Controllers
                         MovieId = movie.Id,
                         CinemaHallId = cinemaHall.Id,
                         TicketPrice = price,
+                        TicketsAvailable = cinemaHall.SeatingCapacity
                     });
                     count++;
                     time = (time == 21) ? 15 : time += 3;
