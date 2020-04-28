@@ -58,9 +58,13 @@ namespace CinemaTicketsBookingSystem.Controllers
             if (cartid == null) return NotFound();
 
             var shoppingCart = _db.ShoppingCarts.FirstOrDefault(s => s.Id == cartid);
-            shoppingCart.Count += 1;
 
             if (shoppingCart == null) return NotFound();
+
+            if (shoppingCart.Count < 12)
+            {
+                shoppingCart.Count += 1;
+            }
 
             _db.SaveChanges();
 
