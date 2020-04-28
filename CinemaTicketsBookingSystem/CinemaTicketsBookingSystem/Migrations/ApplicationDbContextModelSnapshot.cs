@@ -92,47 +92,6 @@ namespace CinemaTicketsBookingSystem.Migrations
                     b.ToTable("Movies");
                 });
 
-            modelBuilder.Entity("CinemaTicketsBookingSystem.Models.Payment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("CVV")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CardNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ExpireDate")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Method")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NameOnCard")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PurchaseHeaderId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("PurchaseHeaderId");
-
-                    b.ToTable("Payments");
-                });
-
             modelBuilder.Entity("CinemaTicketsBookingSystem.Models.PurchaseDetails", b =>
                 {
                     b.Property<int>("Id")
@@ -455,19 +414,6 @@ namespace CinemaTicketsBookingSystem.Migrations
                     b.HasOne("CinemaTicketsBookingSystem.Models.Genre", "Genre")
                         .WithMany()
                         .HasForeignKey("GenreId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("CinemaTicketsBookingSystem.Models.Payment", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId");
-
-                    b.HasOne("CinemaTicketsBookingSystem.Models.PurchaseHeader", "PurchaseHeader")
-                        .WithMany()
-                        .HasForeignKey("PurchaseHeaderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

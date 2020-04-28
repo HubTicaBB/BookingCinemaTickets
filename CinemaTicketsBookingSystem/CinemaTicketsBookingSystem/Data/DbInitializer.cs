@@ -18,18 +18,14 @@ namespace CinemaTicketsBookingSystem.Data
     {
         public static async Task Initialize(IServiceProvider serviceProvider)
         {
-            using (var db = new ApplicationDbContext(
-                serviceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>()))
-            {
-                Seed(db);
-            }
+            using var db = new ApplicationDbContext(serviceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>());
+            Seed(db);
         }
 
         public static void Seed(ApplicationDbContext db)
         {
             //db.Database.EnsureDeleted();
             db.Database.EnsureCreated();
-
             
             SeedGenres(db);
             SeedMovies(db);

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CinemaTicketsBookingSystem.Migrations
 {
-    public partial class Initial : Migration
+    public partial class Ini : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -229,37 +229,6 @@ namespace CinemaTicketsBookingSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Payments",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ApplicationUserId = table.Column<string>(nullable: true),
-                    PurchaseHeaderId = table.Column<int>(nullable: false),
-                    Method = table.Column<string>(nullable: false),
-                    NameOnCard = table.Column<string>(nullable: false),
-                    CardNumber = table.Column<string>(nullable: false),
-                    ExpireDate = table.Column<string>(nullable: false),
-                    CVV = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Payments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Payments_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Payments_Purchases_PurchaseHeaderId",
-                        column: x => x.PurchaseHeaderId,
-                        principalTable: "Purchases",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Showtimes",
                 columns: table => new
                 {
@@ -388,16 +357,6 @@ namespace CinemaTicketsBookingSystem.Migrations
                 column: "GenreId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Payments_ApplicationUserId",
-                table: "Payments",
-                column: "ApplicationUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Payments_PurchaseHeaderId",
-                table: "Payments",
-                column: "PurchaseHeaderId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_PurchaseDetails_ItemId",
                 table: "PurchaseDetails",
                 column: "ItemId");
@@ -449,9 +408,6 @@ namespace CinemaTicketsBookingSystem.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
-
-            migrationBuilder.DropTable(
-                name: "Payments");
 
             migrationBuilder.DropTable(
                 name: "PurchaseDetails");

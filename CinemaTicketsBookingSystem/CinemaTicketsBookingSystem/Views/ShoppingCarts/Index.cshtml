@@ -33,15 +33,19 @@
                         <div class="col-12 text-sm-center col-lg-5 text-lg-right row">
                             <div class="col-4 text-md-right" style="padding-top:5px;">
                                 <h6><strong class="text-light">@item.Item.TicketPrice.ToString("C")<span class="text-muted"> x </span>@item.Count</strong></h6>
+                                @if (@item.Count == 12)
+                                {
+                                    <p class="text-muted text-sm-right">Note: 12 is max</p>
+                                }
                             </div>
                             <div class="col-6 col-sm-4 col-lg-6">
                                 <div class="float-right mx-1">
-                                    <a asp-action="Plus" asp-route-cartId="@item.Id" class="btn btn-outline-info">
+                                    <a asp-action="Plus" asp-route-cartId="@item.Id" class="btn btn-outline-info" title="Note: Max 12 tickets per showtime">
                                         <i class="fas fa-plus"></i>
                                     </a>
                                 </div>
                                 <div class="float-right mx-1">
-                                    <a asp-action="Minus" asp-route-cartId="@item.Id" class="btn btn-outline-warning">
+                                    <a asp-action="Minus" asp-route-cartId="@item.Id" class="btn btn-outline-warning" title="Note: Min 1 ticket per showtime">
                                         <i class="fas fa-minus"></i>
                                     </a>
                                 </div>

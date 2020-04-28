@@ -123,8 +123,11 @@ namespace CinemaTicketsBookingSystem.Controllers
                 else
                 {
                     // Increase count of the existing showtime item
-                    cartFromDb.Count += cartItem.Count;
-                    _db.ShoppingCarts.Update(cartFromDb);
+                    if (cartFromDb.Count + cartItem.Count <= 12)
+                    {
+                        cartFromDb.Count += cartItem.Count;
+                        _db.ShoppingCarts.Update(cartFromDb);
+                    }                    
                 }
                 _db.SaveChanges();
 
