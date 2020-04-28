@@ -25,8 +25,8 @@ namespace CinemaTicketsBookingSystem.Models
         [ForeignKey("ItemId")]
         public Showtime Item { get; set; }
 
-        [Range(1, 100, ErrorMessage = "Please enter a valid number. The minimum number of tickets is 1.")]
-        [RegularExpression("([1-9]+)", ErrorMessage = "Please enter a valid number. The minimum number of tickets is 1.")]        
+        [Range(1, 12, ErrorMessage = "Number of tickets per purchase: min 1 - max 12")]
+        [RegularExpression("([0-9]+)", ErrorMessage = "Please enter a valid number. The minimum number of tickets is 1.")]        
         public int Count { get; set; }
     }
 }
