@@ -6,9 +6,11 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using CinemaTicketsBookingSystem.Data;
 using CinemaTicketsBookingSystem.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Win32.SafeHandles;
 
 namespace CinemaTicketsBookingSystem.Controllers
 {
@@ -16,7 +18,7 @@ namespace CinemaTicketsBookingSystem.Controllers
     {
         private readonly ApplicationDbContext _db;
 
-        [BindProperty]  // Otherwise OrderHeader is considered as not initialized in the POST action method somehow...
+        [BindProperty]
         public ShoppingCartViewModel ShoppingCartVM { get; set; }
 
         public ShoppingCartsController(ApplicationDbContext db)
@@ -84,7 +86,7 @@ namespace CinemaTicketsBookingSystem.Controllers
             {
                 shoppingCart.Count -= 1;
                 _db.SaveChanges();
-            }            
+            }
 
             if (shoppingCart == null) return NotFound();
 
@@ -108,19 +110,74 @@ namespace CinemaTicketsBookingSystem.Controllers
 
         public async Task<IActionResult> Checkout()
         {
-            return View();
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            ShoppingCartVM = new ShoppingCartViewModel()
+            {
+                PurchaseHeader = new PurchaseHeader(),
+                ShoppingCarts = await _db.ShoppingCarts
+                    .Include(s => s.Item)
+                    .Include(s => s.Item.Movie)
+                    .Include(s => s.Item.CinemaHall)
+                    .Where(s => s.ApplicationUserId == claim.Value)
+                    .ToListAsync()
+            };
+
+            ShoppingCartVM.PurchaseHeader.ApplicationUser = _db.Users.FirstOrDefault(u => u.Id == claim.Value);
+
+            foreach (var item in ShoppingCartVM.ShoppingCarts)
+            {
+                ShoppingCartVM.PurchaseHeader.TotalAmount += (item.Item.TicketPrice * item.Count);
+            }            
+
+            return View(ShoppingCartVM);
         }
 
+        public IActionResult PurchaseConfirmation()
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
 
-    //    ShoppingCartVM.PurchaseHeader.ApplicationUser = _db.Users.FirstOrDefault(u => u.Id == claim.Value);
+            ShoppingCartVM = new ShoppingCartViewModel()
+            {
+                PurchaseHeader = new PurchaseHeader(),
+                ShoppingCarts = _db.ShoppingCarts
+                    .Include(s => s.Item)
+                    .Include(s => s.Item.Movie)
+                    .Include(s => s.Item.CinemaHall)
+                    .Where(s => s.ApplicationUserId == claim.Value)
+                    .ToList()
+            };
 
-    //        foreach (var item in ShoppingCartVM.ShoppingCarts)
-    //        {
-    //            ShoppingCartVM.PurchaseHeader.TotalAmount += (item.Price* item.Count);
-    //        }
+            ShoppingCartVM.PurchaseHeader.ApplicationUser = _db.Users.FirstOrDefault(u => u.Id == claim.Value);
+            ShoppingCartVM.PurchaseHeader.UserName = ShoppingCartVM.PurchaseHeader.ApplicationUser.UserName;
+            ShoppingCartVM.PurchaseHeader.Status = "Completed";
+            ShoppingCartVM.PurchaseHeader.PaymentStatus = "Completed";
+            ShoppingCartVM.PurchaseHeader.ApplicationUserId = claim.Value;
+            ShoppingCartVM.PurchaseHeader.Date = DateTime.Now;
 
-    //ShoppingCartVM.PurchaseHeader.UserName = ShoppingCartVM.PurchaseHeader.ApplicationUser.UserName;
+            _db.PurchaseHeaders.Add(ShoppingCartVM.PurchaseHeader);
+            _db.SaveChanges();
 
-    //        return View(ShoppingCartVM);
-}
+            List<PurchaseDetails> purchaseDetailsList = new List<PurchaseDetails>();
+            foreach (var item in ShoppingCartVM.ShoppingCarts)
+            {
+                PurchaseDetails purchaseDetails = new PurchaseDetails()
+                {
+                    ItemId = item.Item.Id,
+                    PurchaseId = ShoppingCartVM.PurchaseHeader.Id,
+                    Price = item.Item.TicketPrice,
+                    Count = item.Count
+                };
+                ShoppingCartVM.PurchaseHeader.TotalAmount += purchaseDetails.Count * purchaseDetails.Price;
+                _db.PurchaseDetails.Add(purchaseDetails);
+            }
+
+            _db.ShoppingCarts.RemoveRange(ShoppingCartVM.ShoppingCarts);
+            _db.SaveChanges();
+            HttpContext.Session.SetInt32("Shopping cart session", 0);
+            return View();
+        }
+    }
 }

@@ -1,8 +1,90 @@
-﻿
+﻿@model CinemaTicketsBookingSystem.Models.ShoppingCartViewModel
+
 @{
     ViewData["Title"] = "Checkout";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Checkout</h1>
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <br />
+    <div class="card-header bg-dark text-light row">
+        <div class="col-6">
+            <h5><i class="fa fa-shopping-cart"></i> &nbsp; Checkout</h5>
+        </div>
+        <div class="col-6 text-right">
+            <a asp-controller="ShoppingCarts" asp-action="Index" class="btn btn-outline-info">Change Your Shopping Cart</a>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12 col-lg-6 pb-4">
+                <h5 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-info">Your Shopping Cart:</span>
+                </h5>
+                <ul class="list-group mb-3">
+                    @foreach (var item in Model.ShoppingCarts)
+                    {
+                        <li class="list-group-item d-flex justify-content-between">
+                            <div>
+                                <h6 class="my-0">@item.Item.Movie.Title</h6>
+                                <small class="text-muted">Quantity: @item.Count</small>
+                            </div>
+                            @{ var totalPerItem = item.Item.TicketPrice * item.Count; }
+                            <span class="text-muted">@totalPerItem.ToString("C") </span>
+                        </li>
+                    }
+                    <li class="list-group-item d-flex justify-content-between bg-light">
+                        <span class="text-info">Total</span>
+                        <strong class="text-info">@(Model.PurchaseHeader.TotalAmount.ToString("C"))</strong>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-12 col-lg-5 offset-lg-1">
+                <h5 class="d-flex justify-content-between align-items-center mb-3">
+                    @* Payment details are not really implemented *@
+                    <span class="text-info">Enter Your Payment Details:</span>
+                </h5>
+                <div class="form-group">
+                    <label class="control-label">Name on Card</label>
+                    <input class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Card Number</label>
+                    <input class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Expiration Date</label>
+                    <select class="form-control">
+                        @{
+                            var year = DateTime.Now.Year;
+                        }
+                        @for (int y = year; y <= 2022; y++)
+                        {
+                            var month = (y == year) ? DateTime.Now.Month : 1;
+                            for (int m = month; m <= 12; m++)
+                            {
+                                <option>@m / @y</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Card Verification Number (CVV)</label>
+                    <input class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.PurchaseHeader.TotalAmount" class="control-label"></label><br />
+                    <input asp-for="@Model.PurchaseHeader.TotalAmount" class="form-control bg-dark text-warning" disabled />
+                </div>
+                <hr />
+               
+                <a asp-controller="ShoppingCarts" asp-action="PurchaseConfirmation" class="btn btn-success form-control btn-lg">Proceed to Checkout</a>
+            </div>
+        </div>
+    </div>
+</form>
 
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

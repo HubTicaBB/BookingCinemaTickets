@@ -27,6 +27,7 @@ namespace CinemaTicketsBookingSystem.Data
 
         public static void Seed(ApplicationDbContext db)
         {
+            //db.Database.EnsureDeleted();
             db.Database.EnsureCreated();
 
             

@@ -11787,3 +11787,12 @@ a.text-dark:hover, a.text-dark:focus {
     .list-group-item-action .list-group-item-heading {
         color: #fff;
     }
+
+
+.payment-not-selected {
+    color: #adb5bd !important;
+}
+
+.payment-selected {
+    color: #F39C12 !important;
+}

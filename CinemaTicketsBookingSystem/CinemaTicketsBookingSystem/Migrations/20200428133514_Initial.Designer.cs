@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CinemaTicketsBookingSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200419214749_MapSeatsCinemaHalls")]
-    partial class MapSeatsCinemaHalls
+    [Migration("20200428133514_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -94,6 +94,47 @@ namespace CinemaTicketsBookingSystem.Migrations
                     b.ToTable("Movies");
                 });
 
+            modelBuilder.Entity("CinemaTicketsBookingSystem.Models.Payment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("CVV")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CardNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ExpireDate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Method")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NameOnCard")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PurchaseHeaderId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("PurchaseHeaderId");
+
+                    b.ToTable("Payments");
+                });
+
             modelBuilder.Entity("CinemaTicketsBookingSystem.Models.PurchaseDetails", b =>
                 {
                     b.Property<int>("Id")
@@ -153,26 +194,6 @@ namespace CinemaTicketsBookingSystem.Migrations
                     b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Purchases");
-                });
-
-            modelBuilder.Entity("CinemaTicketsBookingSystem.Models.Seat", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("CinemaHallId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsAvailable")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CinemaHallId");
-
-                    b.ToTable("Seat");
                 });
 
             modelBuilder.Entity("CinemaTicketsBookingSystem.Models.ShoppingCart", b =>
@@ -440,6 +461,19 @@ namespace CinemaTicketsBookingSystem.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("CinemaTicketsBookingSystem.Models.Payment", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("CinemaTicketsBookingSystem.Models.PurchaseHeader", "PurchaseHeader")
+                        .WithMany()
+                        .HasForeignKey("PurchaseHeaderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("CinemaTicketsBookingSystem.Models.PurchaseDetails", b =>
                 {
                     b.HasOne("CinemaTicketsBookingSystem.Models.Showtime", "Item")
@@ -460,13 +494,6 @@ namespace CinemaTicketsBookingSystem.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "ApplicationUser")
                         .WithMany()
                         .HasForeignKey("ApplicationUserId");
-                });
-
-            modelBuilder.Entity("CinemaTicketsBookingSystem.Models.Seat", b =>
-                {
-                    b.HasOne("CinemaTicketsBookingSystem.Models.CinemaHall", null)
-                        .WithMany("Seats")
-                        .HasForeignKey("CinemaHallId");
                 });
 
             modelBuilder.Entity("CinemaTicketsBookingSystem.Models.ShoppingCart", b =>

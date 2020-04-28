@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CinemaTicketsBookingSystem.Migrations
 {
-    public partial class AddUserToShoppingCart : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -71,20 +71,6 @@ namespace CinemaTicketsBookingSystem.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Genres", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Purchases",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Date = table.Column<DateTime>(nullable: false),
-                    TotalAmount = table.Column<decimal>(type: "decimal(18,4)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Purchases", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -194,6 +180,30 @@ namespace CinemaTicketsBookingSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Purchases",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ApplicationUserId = table.Column<string>(nullable: true),
+                    Date = table.Column<DateTime>(nullable: false),
+                    TotalAmount = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
+                    Status = table.Column<string>(nullable: true),
+                    PaymentStatus = table.Column<string>(nullable: true),
+                    UserName = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Purchases", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Purchases_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Movies",
                 columns: table => new
                 {
@@ -219,6 +229,37 @@ namespace CinemaTicketsBookingSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Payments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ApplicationUserId = table.Column<string>(nullable: true),
+                    PurchaseHeaderId = table.Column<int>(nullable: false),
+                    Method = table.Column<string>(nullable: false),
+                    NameOnCard = table.Column<string>(nullable: false),
+                    CardNumber = table.Column<string>(nullable: false),
+                    ExpireDate = table.Column<string>(nullable: false),
+                    CVV = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Payments_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Payments_Purchases_PurchaseHeaderId",
+                        column: x => x.PurchaseHeaderId,
+                        principalTable: "Purchases",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Showtimes",
                 columns: table => new
                 {
@@ -227,7 +268,8 @@ namespace CinemaTicketsBookingSystem.Migrations
                     Time = table.Column<DateTime>(nullable: false),
                     MovieId = table.Column<int>(nullable: false),
                     CinemaHallId = table.Column<int>(nullable: false),
-                    TicketPrice = table.Column<decimal>(type: "decimal(18,4)", nullable: false)
+                    TicketPrice = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
+                    TicketsAvailable = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -247,6 +289,34 @@ namespace CinemaTicketsBookingSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PurchaseDetails",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PurchaseId = table.Column<int>(nullable: false),
+                    ItemId = table.Column<int>(nullable: false),
+                    Count = table.Column<int>(nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,4)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PurchaseDetails", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PurchaseDetails_Showtimes_ItemId",
+                        column: x => x.ItemId,
+                        principalTable: "Showtimes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PurchaseDetails_Purchases_PurchaseId",
+                        column: x => x.PurchaseId,
+                        principalTable: "Purchases",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ShoppingCarts",
                 columns: table => new
                 {
@@ -254,8 +324,7 @@ namespace CinemaTicketsBookingSystem.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ApplicationUserId = table.Column<string>(nullable: true),
                     ItemId = table.Column<int>(nullable: false),
-                    Count = table.Column<int>(nullable: false),
-                    IsPending = table.Column<bool>(nullable: false)
+                    Count = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -319,6 +388,31 @@ namespace CinemaTicketsBookingSystem.Migrations
                 column: "GenreId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Payments_ApplicationUserId",
+                table: "Payments",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Payments_PurchaseHeaderId",
+                table: "Payments",
+                column: "PurchaseHeaderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PurchaseDetails_ItemId",
+                table: "PurchaseDetails",
+                column: "ItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PurchaseDetails_PurchaseId",
+                table: "PurchaseDetails",
+                column: "PurchaseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Purchases_ApplicationUserId",
+                table: "Purchases",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ShoppingCarts_ApplicationUserId",
                 table: "ShoppingCarts",
                 column: "ApplicationUserId");
@@ -357,7 +451,10 @@ namespace CinemaTicketsBookingSystem.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Purchases");
+                name: "Payments");
+
+            migrationBuilder.DropTable(
+                name: "PurchaseDetails");
 
             migrationBuilder.DropTable(
                 name: "ShoppingCarts");
@@ -366,10 +463,13 @@ namespace CinemaTicketsBookingSystem.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Purchases");
 
             migrationBuilder.DropTable(
                 name: "Showtimes");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "CinemaHalls");
