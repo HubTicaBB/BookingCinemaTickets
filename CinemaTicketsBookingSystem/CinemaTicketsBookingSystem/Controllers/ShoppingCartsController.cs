@@ -172,6 +172,10 @@ namespace CinemaTicketsBookingSystem.Controllers
                 };
                 ShoppingCartVM.PurchaseHeader.TotalAmount += purchaseDetails.Count * purchaseDetails.Price;
                 _db.PurchaseDetails.Add(purchaseDetails);
+
+                var itemFromDb = _db.Showtimes.FirstOrDefault(s => s.Id == item.Item.Id);
+                itemFromDb.TicketsAvailable -= item.Count;
+                _db.Showtimes.Update(itemFromDb);
             }
 
             _db.ShoppingCarts.RemoveRange(ShoppingCartVM.ShoppingCarts);
