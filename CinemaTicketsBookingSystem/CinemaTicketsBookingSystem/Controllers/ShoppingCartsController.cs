@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Win32.SafeHandles;
 
 namespace CinemaTicketsBookingSystem.Controllers
@@ -58,10 +59,12 @@ namespace CinemaTicketsBookingSystem.Controllers
             if (cartid == null) return NotFound();
 
             var shoppingCart = _db.ShoppingCarts.FirstOrDefault(s => s.Id == cartid);
-
             if (shoppingCart == null) return NotFound();
 
-            if (shoppingCart.Count < 12)
+            var showtimeFromDb = _db.Showtimes.FirstOrDefault(s => s.Id == shoppingCart.ItemId);
+            if (showtimeFromDb == null) return NotFound();
+
+            if (shoppingCart.Count < 12 && shoppingCart.Count < showtimeFromDb.TicketsAvailable)
             {
                 shoppingCart.Count += 1;
             }
