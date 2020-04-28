@@ -12,7 +12,7 @@
         <tbody>
             @foreach (var showtime in Model)
             {
-                <tr>
+                <tr id="showtime">
                     <th scope="row"><img src="@Url.Content(showtime.Movie.PosterUrl)" class="table-img rounded" /></th>
                     <td>
                         <h4>@showtime.Movie.Title</h4>
@@ -22,7 +22,14 @@
                             <dd>@showtime.Movie.Director</dd>
                             <dd>
                                 <a asp-controller="Movies" asp-action="Details" asp-route-id="@showtime.Movie.Id" class="btn btn-outline-info">Read More</a> &nbsp;
-                                <a asp-controller="Showtimes" asp-action="Buy" asp-route-id="@showtime.Id" class="btn btn-outline-warning">Buy Ticket</a>
+                                @if (showtime.TicketsAvailable > 0)
+                                {
+                                    <a asp-controller="Showtimes" asp-action="Buy" asp-route-id="@showtime.Id" class="btn btn-outline-warning">Buy Ticket</a>
+                                }
+                                else
+                                {
+                                    <a class="btn btn-outline-danger text-danger">Sold Out</a>
+                                }
                             </dd>
                         </dl>
                     </td>
