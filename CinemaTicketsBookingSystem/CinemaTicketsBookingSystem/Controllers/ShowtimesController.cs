@@ -21,7 +21,7 @@ namespace CinemaTicketsBookingSystem.Controllers
             _db = db;
         }
 
-        public async Task<IActionResult> Index(int? id)
+        public async Task<IActionResult> Index(int? id, string sortby)
         {
             if (!_db.Showtimes.Any(s => s.Time.Date == DateTime.Today))
             {
@@ -54,7 +54,38 @@ namespace CinemaTicketsBookingSystem.Controllers
                 .Include(s => s.Movie)
                 .Include(s => s.CinemaHall)
                 .Where(s => s.Time.Day == DateTime.Now.Day)
-                .OrderBy(s => s.Time).ToListAsync();
+                .ToListAsync();
+
+            switch (sortby)
+            {
+                case "priceAsc":
+                    showtimes = showtimes.OrderBy(s => s.TicketPrice).ToList();
+                    break;
+                case "priceDesc":
+                    showtimes = showtimes.OrderByDescending(s => s.TicketPrice).ToList();
+                    break;
+                case "startingTimeAsc":
+                    showtimes = showtimes.OrderBy(s => s.Time).ToList();
+                    break;
+                case "startingTimeDesc":
+                    showtimes = showtimes.OrderByDescending(s => s.Time).ToList();
+                    break;
+                case "ticketsLeftAsc":
+                    showtimes = showtimes.OrderBy(s => s.TicketsAvailable).ToList();
+                    break;
+                case "ticketsLeftDesc":
+                    showtimes = showtimes.OrderByDescending(s => s.TicketsAvailable).ToList();
+                    break;
+                case "durationAsc":
+                    showtimes = showtimes.OrderBy(s => s.Movie.Duration).ToList();
+                    break;
+                case "durationDesc":
+                    showtimes = showtimes.OrderByDescending(s => s.Movie.Duration).ToList();
+                    break;
+                default:
+                    break;
+            }
+
 
             if (id != null)
             {
