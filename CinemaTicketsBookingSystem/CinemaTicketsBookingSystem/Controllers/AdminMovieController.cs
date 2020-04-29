@@ -9,9 +9,11 @@ using CinemaTicketsBookingSystem.Data;
 using CinemaTicketsBookingSystem.Models;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CinemaTicketsBookingSystem.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminMovieController : Controller
     {
         private readonly ApplicationDbContext _context;

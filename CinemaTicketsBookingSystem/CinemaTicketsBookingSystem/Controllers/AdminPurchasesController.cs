@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CinemaTicketsBookingSystem.Data;
 using CinemaTicketsBookingSystem.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CinemaTicketsBookingSystem.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminPurchasesController : Controller
     {
         private readonly ApplicationDbContext _context;
