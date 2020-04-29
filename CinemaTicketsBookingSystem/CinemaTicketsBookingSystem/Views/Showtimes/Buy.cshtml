@@ -18,7 +18,7 @@
     <div class="card-body">
         <div class="rounded">
             <div class="row">
-                <div class="col-8 col-lg-8">
+                <div class="col-8 col-lg-8 col-resp">
                     <div class="row pl-2">
                         <h6 class="text-muted pb-2">Cinema Hall: <span class="text-light">@Model.Item.CinemaHall.Name</span></h6>
                     </div>
@@ -32,9 +32,9 @@
                         <p class="text-muted" style="margin: 25px 0">@Model.Item.Movie.Plot</p>
                     </div>
                     <div class="row pl-2">
-                        <div class="col-2 text-primary"><h4>Count</h4></div>
-                        <div class="col-2">
-                            <select class="form-control" asp-for="Count">
+                        <div class="col-2 text-primary input-resp"><h4>Count</h4></div>
+                        <div class="col-2 input-resp">
+                            <select class="form-control" asp-for="Count" onfocus='this.size=3;' onblur='this.size=1;' onchange='this.size=1;' this.blur();>
                                 @{
                                     var maxTickets = (Model.Item.TicketsAvailable < 12) ? Model.Item.TicketsAvailable : 12;
                                 }
