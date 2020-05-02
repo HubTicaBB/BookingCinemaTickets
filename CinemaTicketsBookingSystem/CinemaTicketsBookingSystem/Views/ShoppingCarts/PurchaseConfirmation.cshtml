@@ -23,7 +23,7 @@
                         <span class="navbar-brand">Berras Bio</span>
                         @{ var barcode = "https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=" + ticket.PurchaseId + ticket.Item.Id + i; }
                         <img class="float-right" src=@barcode /><br />
-                        Movie Ticket No. @ticket.Id-@i
+                        <i class="fas fa-ticket-alt fa-2x"></i>&nbsp; Ticket No. @ticket.Id-@i
                     </div>
                     <div class="card-body">
                         <h3 class="card-title">@ticket.Item.Movie.Title (@ticket.Item.Movie.ReleaseYear)</h3>
