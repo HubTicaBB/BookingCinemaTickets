@@ -136,9 +136,24 @@ namespace CinemaTicketsBookingSystem.Controllers
             foreach (var item in ShoppingCartVM.ShoppingCarts)
             {
                 ShoppingCartVM.PurchaseHeader.TotalAmount += (item.Item.TicketPrice * item.Count);
-            }            
+            }
 
             return View(ShoppingCartVM);
+        }
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        [ActionName("Checkout")]
+        public IActionResult CheckoutPost()
+        {
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("PurchaseConfirmation");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         public IActionResult PurchaseConfirmation()
@@ -166,7 +181,7 @@ namespace CinemaTicketsBookingSystem.Controllers
 
             _db.PurchaseHeaders.Add(ShoppingCartVM.PurchaseHeader);
             _db.SaveChanges();
-            
+
             foreach (var item in ShoppingCartVM.ShoppingCarts)
             {
                 PurchaseDetails purchaseDetails = new PurchaseDetails()
@@ -190,7 +205,7 @@ namespace CinemaTicketsBookingSystem.Controllers
             _db.ShoppingCarts.RemoveRange(ShoppingCartVM.ShoppingCarts);
             _db.SaveChanges();
             HttpContext.Session.SetInt32("Shopping cart session", 0);
-            
+
             return View(allTickets);
         }
     }

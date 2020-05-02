@@ -9,5 +9,6 @@ namespace CinemaTicketsBookingSystem.Models
     {
         public IEnumerable<ShoppingCart> ShoppingCarts { get; set; }
         public PurchaseHeader PurchaseHeader { get; set; }
+        public Payment Payment { get; set; }
     }
 }

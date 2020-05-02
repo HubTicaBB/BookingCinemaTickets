@@ -33,8 +33,5 @@ namespace CinemaTicketsBookingSystem.Models
 
         [NotMapped]
         public ShoppingCart ShoppingCart { get; set; }
-
-        [NotMapped]
-        public ICollection<Ticket> Tickets { get; set; }
     }
 }

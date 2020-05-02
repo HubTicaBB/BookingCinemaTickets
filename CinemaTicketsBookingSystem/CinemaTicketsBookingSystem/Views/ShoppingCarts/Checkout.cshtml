@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<form method="post">
+<form asp-controller="ShoppingCarts" asp-action="Checkout" method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <br />
     <div class="card-header bg-dark text-light row">
@@ -46,16 +46,18 @@
                     <span class="text-info">Enter Your Payment Details:</span>
                 </h5>
                 <div class="form-group">
-                    <label class="control-label">Name on Card</label>
-                    <input class="form-control" />
+                    <label asp-for="@Model.Payment.NameOnCard" class="control-label"></label>
+                    <input asp-for="@Model.Payment.NameOnCard" class="form-control" />
+                    <span asp-validation-for="@Model.Payment.NameOnCard" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label class="control-label">Card Number</label>
-                    <input class="form-control" />
+                    <label asp-for="@Model.Payment.CardNumber" class="control-label"></label>
+                    <input asp-for="@Model.Payment.CardNumber" class="form-control" />
+                    <span asp-validation-for="@Model.Payment.CardNumber" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label class="control-label">Expiration Date</label>
-                    <select class="form-control">
+                    <label asp-for="@Model.Payment.ExpirationDate" class="control-label"></label>
+                    <select asp-for="@Model.Payment.ExpirationDate" class="form-control">
                         @{
                             var year = DateTime.Now.Year;
                         }
@@ -68,18 +70,20 @@
                             }
                         }
                     </select>
+                    <span asp-validation-for="@Model.Payment.ExpirationDate" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label class="control-label">Card Verification Number (CVV)</label>
-                    <input class="form-control" />
+                    <label asp-for="@Model.Payment.CVV" class="control-label"></label>
+                    <input asp-for="@Model.Payment.CVV" class="form-control" />
+                    <span asp-validation-for="@Model.Payment.CVV" class="text-danger"></span><br /><br />
                 </div>
                 <div class="form-group">
                     <label asp-for="@Model.PurchaseHeader.TotalAmount" class="control-label"></label><br />
                     <input asp-for="@Model.PurchaseHeader.TotalAmount" class="form-control bg-dark text-warning" disabled />
                 </div>
                 <hr />
-               
-                <a asp-controller="ShoppingCarts" asp-action="PurchaseConfirmation" class="btn btn-success form-control btn-lg">Proceed to Checkout</a>
+
+                <button type="submit" class="btn btn-success" id="submit-btn">Submit</button>
             </div>
         </div>
     </div>
