@@ -166,8 +166,7 @@ namespace CinemaTicketsBookingSystem.Controllers
 
             _db.PurchaseHeaders.Add(ShoppingCartVM.PurchaseHeader);
             _db.SaveChanges();
-
-            List<PurchaseDetails> purchaseDetailsList = new List<PurchaseDetails>();
+            
             foreach (var item in ShoppingCartVM.ShoppingCarts)
             {
                 PurchaseDetails purchaseDetails = new PurchaseDetails()
@@ -184,11 +183,15 @@ namespace CinemaTicketsBookingSystem.Controllers
                 itemFromDb.TicketsAvailable -= item.Count;
                 _db.Showtimes.Update(itemFromDb);
             }
+            _db.SaveChanges();
+
+            var allTickets = _db.PurchaseDetails.Where(p => p.PurchaseId == ShoppingCartVM.PurchaseHeader.Id).ToList();
 
             _db.ShoppingCarts.RemoveRange(ShoppingCartVM.ShoppingCarts);
             _db.SaveChanges();
             HttpContext.Session.SetInt32("Shopping cart session", 0);
-            return View();
+            
+            return View(allTickets);
         }
     }
 }

@@ -1,8 +1,55 @@
-﻿
+﻿@model IEnumerable<CinemaTicketsBookingSystem.Models.PurchaseDetails>
+
 @{
-    ViewData["Title"] = "PurchaseConfirmation";
+    ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+    <br />
+    <div class="card-header bg-dark text-light row">
+        <div class="col-12">
+            <h4 class="text-success"><i class="far fa-check-circle"></i> &nbsp; You have successfully completed your purchase</h4>
+            <a asp-controller="Movies" asp-action="Index" class="btn btn-outline-info float-right">Back to movie repertoire</a>
+            <h5 class="text-muted">Here your tickets:</h5>
+        </div>
+    </div>
+    <div class="card-body pl-0 pr-0">
 
-<h1>PurchaseConfirmation</h1>
+        @foreach (var ticket in Model)
+        {
+            for (int i = 0; i < ticket.Count; i++)
+            {
+                <div class="card text-white border-light mb-3">
+                    <div class="card-header col-lg-auto justify-content-between">
+                        <span class="navbar-brand">Berras Bio</span>
+                        @{ var barcode = "https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=" + ticket.PurchaseId + ticket.Item.Id + i; }
+                        <img class="float-right" src=@barcode /><br />
+                        Movie Ticket No. @ticket.Id-@i
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">@ticket.Item.Movie.Title (@ticket.Item.Movie.ReleaseYear)</h3>
+                        <h6 class="card-subtitle mb-2">by @ticket.Item.Movie.Director</h6>
+                        <hr />
+                        <div class="ml-0">
+                            <div class="card-text row col-lg-auto justify-content-between ml-0 mr-0 pl-0 pr-0">
+                                <div class="col-6 text-uppercase pl-0 pr-0">Cinema Hall: </div>
+                                <div class="col-6">@ticket.Item.CinemaHall.Name</div>
+                            </div>
+                            <div class="card-text row col-lg-auto justify-content-between ml-0 mr-0 pl-0 pr-0">
+                                <div class="col-6 text-uppercase pl-0 pr-0">Date: </div>
+                                <div class="col-6">@DateTime.Today.Date.ToLongDateString()</div>
+                            </div>
+                            <div class="card-text row col-lg-auto justify-content-between ml-0 mr-0 pl-0 pr-0">
+                                <div class="col-6 text-uppercase pl-0 pr-0">Time: </div>
+                                <div class="col-6">@ticket.Item.Time.ToString("HH:mm")</div>
+                            </div>
+                            <div class="card-text row col-lg-auto justify-content-between ml-0 mr-0 pl-0 pr-0">
+                                <div class="col-6 text-uppercase pl-0 pr-0">Price: </div>
+                                <div class="col-6">@ticket.Item.TicketPrice.ToString("C")</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
 
