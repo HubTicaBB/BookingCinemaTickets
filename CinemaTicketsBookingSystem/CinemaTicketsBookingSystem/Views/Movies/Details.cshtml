@@ -16,9 +16,15 @@
                     <dd>@Model.Plot<br /></dd>
                     <dd><span class="text-muted">Director:</span> <strong>@Model.Director</strong></dd>
                     <dd>
-                        <br />                        
-                        <a asp-controller="Movies" asp-action="Index" class="btn btn-outline-info">Back to Repertoire</a> &nbsp;
-                        <a asp-controller="Showtimes" asp-action="Index" asp-route-id="@Model.Id" class="btn btn-outline-success">Find Showtimes</a>
+                        <br />
+                        <div class="row">
+                            <div class="col-11 col-md-6 pb-1">
+                                <a asp-controller="Movies" asp-action="Index" class="btn btn-outline-info form-control btn-square btn-lg">Back to Repertoire</a> &nbsp;
+                            </div>
+                            <div class="col-11 col-md-6 pb-1">
+                                <a asp-controller="Showtimes" asp-action="Index" asp-route-id="@Model.Id" class="btn btn-outline-success form-control btn-square btn-lg">Find Showtimes</a>
+                            </div>
+                        </div>
                     </dd>
                 </dl>
             </td>

@@ -10,15 +10,15 @@
     <br />
     <div class="card-header bg-dark text-light row">
         <div class="col-6">
-            <h5><i class="fa fa-shopping-cart"></i> &nbsp; Checkout</h5>
+            <h5><i class="far fa-credit-card"></i>&nbsp; Checkout</h5>
         </div>
         <div class="col-6 text-right">
-            <a asp-controller="ShoppingCarts" asp-action="Index" class="btn btn-outline-info">Change Your Shopping Cart</a>
+            <a asp-controller="ShoppingCarts" asp-action="Index" class="btn btn-outline-info">Back to <i class="fa fa-shopping-cart"></i></a>
         </div>
     </div>
     <div class="card-body">
         <div class="row">
-            <div class="col-12 col-lg-6 pb-4">
+            <div class="col-12 col-lg-6 pb-4 pl-0 pr-0">
                 <h5 class="d-flex justify-content-between align-items-center mb-3">
                     <span class="text-info">Your Shopping Cart:</span>
                 </h5>
@@ -40,9 +40,8 @@
                     </li>
                 </ul>
             </div>
-            <div class="col-12 col-lg-5 offset-lg-1">
+            <div class="col-12 col-lg-5 offset-lg-1 pl-0 pr-0">
                 <h5 class="d-flex justify-content-between align-items-center mb-3">
-                    @* Payment details are not really implemented *@
                     <span class="text-info">Enter Your Payment Details:</span>
                 </h5>
                 <div class="form-group">
@@ -83,7 +82,7 @@
                 </div>
                 <hr />
 
-                <button type="submit" class="btn btn-success" id="submit-btn">Submit</button>
+                <button type="submit" class="btn btn-success form-control btn-lg" id="submit-btn">Submit</button>
             </div>
         </div>
     </div>
