@@ -1,4 +1,3 @@
 # BookingCinemaTickets
-https://berrasbio.azurewebsites.net
 
-
+ASP.NET MVC Web Application
